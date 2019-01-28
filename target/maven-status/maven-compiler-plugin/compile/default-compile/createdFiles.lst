@@ -1,0 +1,6 @@
+io\battlesnake\starter\Snake.class
+io\battlesnake\starter\BoardData.class
+io\battlesnake\starter\Coord.class
+io\battlesnake\starter\SnakeData.class
+io\battlesnake\starter\MoveSelector.class
+io\battlesnake\starter\Snake$Handler.class
