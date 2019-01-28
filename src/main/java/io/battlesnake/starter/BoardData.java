@@ -57,19 +57,38 @@ import com.fasterxml.jackson.databind.JsonNode;
 		}
 	}
 	
-	public String getID() {
+	protected String getID() {
 		return gameID;
 	}
 	
-	public int getTurnNumber() {
+	protected int getTurnNumber() {
 		return turnNumber;
 	}
 	
-	public SnakeData[] getSnakes() {
+	protected SnakeData[] getSnakes() {
 		return snakes;
 	}
 	
-	public int[][] getBoard() {
+	protected int[][] getBoard() {
 		return board;
+	}
+	
+	protected SnakeData getSelf() {
+		return self;
+	}
+	
+	/*
+	 * Returns the value associated with that square on the board
+	 * If invalid coordinates, then it returns 4 (to symbolize a wall)
+	 */
+	protected int get(int x, int y) {
+		if (0 > x || x >= board.length()) {
+			return 4;
+		}
+		if (0 > y || y >= board[0].length) {
+			return 4
+		}
+		
+		return board[x][y];
 	}
  }

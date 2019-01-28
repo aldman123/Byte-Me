@@ -12,14 +12,39 @@ public class MoveSelector {
 	
 	private PrintWriter printWriter = null;
 	private File file;
-	private BoardData board;
+	private BoardData boardData;
+	private int[][] board;
+	private SnakeData self;
+	private ArrayList<Coord> moveOptions, scratch;
 	
 	public String selectMove(JsonNode moveRequest) {
 		String turn = moveRequest.get("turn").asText();
-		board = new BoardData(moveRequest);
-		saveToFile(board, "Board_On_Move_" + turn);
+		boardData = new BoardData(moveRequest);
+		board = boardData.getBoard();
+		self = board.getSelf();
+		saveToFile(boardData, "Board_On_Move_" + turn);
+		String move = valueRanking();
 		return right;
 	}
+	
+	private String valueRanking() {
+		int x = self.getHead().getX();
+		int y = self.getHead().getY()
+		moveOptions = new ArrayList<Coord>();
+		//L1
+		scratch = new ArrayList<Coord>();
+		if (board[x-1][y]
+		
+		
+		//L2
+		
+		//L3
+		
+		//L4
+	}
+	
+	
+	
 	
 	public void saveToFile(String output, String fileName) {
 		String[] arr = {output};
@@ -35,10 +60,10 @@ public class MoveSelector {
 		printWriter.close();
 	}
 	
-	private void saveToFile(BoardData board, String fileName) {
+	private void saveToFile(BoardData boardData, String fileName) {
 		PrintWriter file = createSaveFile(fileName);
 		file.println("Current State of Board");
-		int[][] rawBoard = board.getBoard();
+		int[][] rawBoard = boardData.getBoard();
 		for (int j = 0; j < rawBoard[0].length; j++) {
 			String line = "{";
 			for (int i = 0; i < rawBoard.length - 1; i++) {
