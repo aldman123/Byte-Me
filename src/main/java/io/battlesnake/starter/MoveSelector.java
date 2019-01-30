@@ -4,6 +4,8 @@ import java.io.PrintWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import java.util.ArrayList;
+
 public class MoveSelector {
 	private final String up = "up";
 	private final String down = "down";
@@ -15,35 +17,123 @@ public class MoveSelector {
 	private BoardData boardData;
 	private int[][] board;
 	private SnakeData self;
-	private ArrayList<Coord> moveOptions, scratch;
+	private ArrayList<Coord> moveOptions, scratch, scratch2;
+	private String optimalPath = up;
 	
 	public String selectMove(JsonNode moveRequest) {
 		String turn = moveRequest.get("turn").asText();
-		boardData = new BoardData(moveRequest);
+		this.boardData = new BoardData(moveRequest);
 		board = boardData.getBoard();
-		self = board.getSelf();
+		self = boardData.getSelf();
 		saveToFile(boardData, "Board_On_Move_" + turn);
-		String move = valueRanking();
-		return right;
+		return valueRanking();
 	}
 	
 	private String valueRanking() {
 		int x = self.getHead().getX();
-		int y = self.getHead().getY()
-		moveOptions = new ArrayList<Coord>();
-		//L1
+		int y = self.getHead().getY();
+		moveOptions = boardData.getAdjacent(x, y);
+		System.out.println("L1: " + moveOptions.toString());
+		if (isThereOptimalPath(moveOptions)) {
+			return optimalPath;
+		}
+		
+		//L2	Don't go adjacent to wall or snake
+		System.out.println("L2: " + moveOptions.toString());
 		scratch = new ArrayList<Coord>();
-		if (board[x-1][y]
+		//For each space from L1
+		for (Coord c : moveOptions) {
+			boolean isSafe = true;
+			scratch2 = boardData.getAdjacent(c);
+			//For each space adjacent to the direction being considered
+			for (Coord c2 : scratch2) {
+				//If the space 2 turns away from us is a bad snake
+				if (boardData.get(c2) == 3) {
+					//If the snake is our size or larger, it can kill us
+					if (boardData.getSnake(c2).getSize() > self.getSize()) {
+						isSafe = false;
+					}
+				}
+			}
+			if (isSafe) {
+				scratch.add(c);
+			}
+		}
 		
+		if (isThereOptimalPath(scratch)) {
+			return optimalPath;
+		} else if (scratch.size() < moveOptions.size()) {
+			moveOptions = scratch;
+		}
 		
-		//L2
+		//L3	Are we adjacent to any food?
+		System.out.println("L3: " + moveOptions.toString());
+		scratch.clear();
+		for (Coord c : moveOptions) {
+			if (boardData.get(c) == 1) {
+				scratch.add(c);
+			}
+		}
 		
-		//L3
+		if (isThereOptimalPath(scratch)) {
+			return optimalPath;
+		} else if (scratch.size() < moveOptions.size()) {
+			moveOptions = scratch;
+		}
 		
-		//L4
+		//L4	Else pick a direction not adjacent to a wall
+		System.out.println("L4: " + moveOptions.toString());
+		for (Coord c : moveOptions) {
+			boolean isSafe = true;
+			scratch2 = boardData.getAdjacent(c);
+			//For each space adjacent to the direction being considered
+			for (Coord c2 : scratch2) {
+				//If the space 2 turns away from us is a wall/tail
+				if (boardData.get(c2) > 3) {
+					isSafe = false;
+				}
+			}
+			if (isSafe) {
+				scratch.add(c);
+			}
+		}
+		
+		if (isThereOptimalPath(scratch)) {
+			return optimalPath;
+		} else {
+			return coordToDirection(scratch.get(0));
+		}
+		
 	}
 	
+	private boolean isThereOptimalPath(ArrayList<Coord> moveOptions) {
+		switch (moveOptions.size()) {
+		case 0:
+			optimalPath = up;
+			return true;
+		case 1:
+			optimalPath = coordToDirection(moveOptions.get(0));
+			return true;
+		}
+		
+		return false;
+		
+	}
 	
+	private String coordToDirection(Coord point) {
+		if (point.getX() - self.getHead().getX() < 0) {
+			return down;
+		} else if (point.getX() - self.getHead().getX() > 0) {
+			return up;
+		} else if (point.getY() - self.getHead().getY() < 0) {
+			return right;
+		} else if (point.getY() - self.getHead().getY() > 0) {
+			return left;
+		} else {
+			System.out.println('\n' + "CoordToDirection Error" + '\n');
+			return up;
+		}
+	}
 	
 	
 	public void saveToFile(String output, String fileName) {
