@@ -82,6 +82,7 @@ public class MoveSelector {
 			moveOptions = scratch;
 		}
 		
+		scratch.clear();
 		//L4	Else pick a direction not adjacent to a wall
 		System.out.println("L4: " + moveOptions.toString());
 		for (Coord c : moveOptions) {
@@ -111,7 +112,7 @@ public class MoveSelector {
 		switch (moveOptions.size()) {
 		case 0:
 			optimalPath = up;
-			return true;
+			return false;
 		case 1:
 			optimalPath = coordToDirection(moveOptions.get(0));
 			System.out.println("Optimal Path Found: " + optimalPath + ", " + moveOptions.get(0));
