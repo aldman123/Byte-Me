@@ -1,4 +1,4 @@
-starter-snake-java
+Byte-Me -> A derivation of starter-snake-java
 ===
 
 [![Build Status](https://travis-ci.org/battlesnakeio/starter-snake-java.svg?branch=master)](https://travis-ci.org/battlesnakeio/starter-snake-java)
@@ -22,7 +22,7 @@ Running the snake
 ---
 
 ```bash
-mvn exec:exec
+mvn compile exec:exec
 ```
 
 Snake will start up on port 8080
