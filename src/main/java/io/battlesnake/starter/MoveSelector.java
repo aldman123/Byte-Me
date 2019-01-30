@@ -32,6 +32,7 @@ public class MoveSelector {
 	private String valueRanking() {
 		int x = self.getHead().getX();
 		int y = self.getHead().getY();
+		System.out.println("Self: {" + x + ", " + y + "}");
 		moveOptions = boardData.getAdjacent(x, y);
 		System.out.println("L1: " + moveOptions.toString());
 		if (isThereOptimalPath(moveOptions)) {
@@ -113,6 +114,7 @@ public class MoveSelector {
 			return true;
 		case 1:
 			optimalPath = coordToDirection(moveOptions.get(0));
+			System.out.println("Optimal Path Found: " + optimalPath + ", " + moveOptions.get(0));
 			return true;
 		}
 		
@@ -122,13 +124,13 @@ public class MoveSelector {
 	
 	private String coordToDirection(Coord point) {
 		if (point.getX() - self.getHead().getX() < 0) {
-			return down;
-		} else if (point.getX() - self.getHead().getX() > 0) {
-			return up;
-		} else if (point.getY() - self.getHead().getY() < 0) {
-			return right;
-		} else if (point.getY() - self.getHead().getY() > 0) {
 			return left;
+		} else if (point.getX() - self.getHead().getX() > 0) {
+			return right;
+		} else if (point.getY() - self.getHead().getY() < 0) {
+			return up;
+		} else if (point.getY() - self.getHead().getY() > 0) {
+			return down;
 		} else {
 			System.out.println('\n' + "CoordToDirection Error" + '\n');
 			return up;
