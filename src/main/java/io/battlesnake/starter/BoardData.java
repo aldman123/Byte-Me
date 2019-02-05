@@ -1,5 +1,7 @@
 package io.battlesnake.starter;
 import com.fasterxml.jackson.databind.JsonNode;
+
+import java.util.ArrayList;
 /*
  * This class takes a BattleSnakes JsonNode as input,
  * and creates an object to let us analyse the data
@@ -57,19 +59,71 @@ import com.fasterxml.jackson.databind.JsonNode;
 		}
 	}
 	
-	public String getID() {
+	protected String getID() {
 		return gameID;
 	}
 	
-	public int getTurnNumber() {
+	protected int getTurnNumber() {
 		return turnNumber;
 	}
 	
-	public SnakeData[] getSnakes() {
+	protected SnakeData[] getSnakes() {
 		return snakes;
 	}
 	
-	public int[][] getBoard() {
+	protected SnakeData getSnake(Coord c) {
+		for (SnakeData s : snakes) {
+			for (Coord c2 : s.getBody()) {
+				if (c.getX() == c2.getX() && c.getY() == c2.getY()) {
+					return s;
+				}
+			}
+		}
+		return null;
+	}
+	
+	protected int[][] getBoard() {
 		return board;
+	}
+	
+	protected SnakeData getSelf() {
+		return self;
+	}
+	
+	/*
+	 * Returns the value associated with that square on the board
+	 * If invalid coordinates, then it returns 5
+	 */
+	protected int get(int x, int y) {
+		if (0 > x || x >= board.length || 0 > y || y >= board[0].length) {
+			return 5;
+		} else {
+			return board[x][y];
+		}
+	}
+	
+	protected int get(Coord c) {
+		return get(c.getX(), c.getY());
+	}
+	
+	protected ArrayList<Coord> getAdjacent(Coord c) {
+		return getAdjacent(c.getX(), c.getY());
+	}
+	
+	protected ArrayList<Coord> getAdjacent(int x, int y) {
+		ArrayList<Coord> scratch = new ArrayList<Coord>();
+		if (get(x-1,y) < 4) {
+			scratch.add(new Coord(x-1,y));
+		}
+		if (get(x+1,y) < 4) {
+			scratch.add(new Coord(x+1,y));
+		}
+		if (get(x,y-1) < 4) {
+			scratch.add(new Coord(x, y-1));
+		}
+		if (get(x,y+1) < 4) {
+			scratch.add(new Coord(x, y+1));
+		}
+		return scratch;
 	}
  }

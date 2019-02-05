@@ -27,6 +27,7 @@ public class Snake {
     private static final Logger LOG = LoggerFactory.getLogger(Snake.class);
 	
 	private static MoveSelector moveDecider;
+	private static long minDeltaTime, maxDeltaTime;
 
     /**
      * Main entry point.
@@ -34,6 +35,8 @@ public class Snake {
      * @param args are ignored.
      */
     public static void main(String[] args) {
+		minDeltaTime = Long.MAX_VALUE;
+		maxDeltaTime = 0;
 		moveDecider = new MoveSelector();
         String port = System.getProperty("PORT");
         if (port != null) {
@@ -84,12 +87,19 @@ public class Snake {
                     snakeResponse = move(parsedRequest);
                 } else if (uri.equals("/end")) {
                     snakeResponse = end(parsedRequest);
+					System.out.println('\n' + "Max Time Elapsed: " + maxDeltaTime
+									 + '\n' + "Min Time Elapsed: " + minDeltaTime + '\n');
                 } else {
                     throw new IllegalAccessError("Strange call made to the snake: " + uri);
                 }
                 LOG.info("Responding with: {}", JSON_MAPPER.writeValueAsString(snakeResponse));
-                
-			System.out.println('\n'+"Elapsed time: " + (System.currentTimeMillis() - startTime) + '\n');
+            long deltaTime = System.currentTimeMillis() - startTime;
+			if (deltaTime > maxDeltaTime) {
+				maxDeltaTime = deltaTime;
+			} else if (deltaTime < minDeltaTime) {
+				minDeltaTime = deltaTime;
+			}
+			System.out.println('\n'+"Elapsed time: " + (deltaTime) + '\n');
 				return snakeResponse;
             } catch (Exception e) {
                 LOG.warn("Something went wrong!", e);
