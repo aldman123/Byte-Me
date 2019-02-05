@@ -64,12 +64,12 @@ public class MoveSelector {
 		if (isThereOptimalPath(scratch)) {
 			return optimalPath;
 		} else if (scratch.size() < moveOptions.size()) {
-			moveOptions = scratch;
+			moveOptions = (ArrayList<Coord>) scratch.clone();
 		}
+		scratch.clear();
 		
 		//L3	Are we adjacent to any food?
 		System.out.println("L3: " + moveOptions.toString());
-		scratch.clear();
 		for (Coord c : moveOptions) {
 			if (boardData.get(c) == 1) {
 				scratch.add(c);
@@ -78,11 +78,11 @@ public class MoveSelector {
 		
 		if (isThereOptimalPath(scratch)) {
 			return optimalPath;
-		} else if (scratch.size() < moveOptions.size()) {
-			moveOptions = scratch;
+		} else if (scratch.size() > 1) {
+			moveOptions = (ArrayList<Coord>) scratch.clone();
 		}
-		
 		scratch.clear();
+		
 		//L4	Else pick a direction not adjacent to a wall
 		System.out.println("L4: " + moveOptions.toString());
 		for (Coord c : moveOptions) {
@@ -99,11 +99,13 @@ public class MoveSelector {
 				scratch.add(c);
 			}
 		}
-		
-		if (isThereOptimalPath(scratch)) {
+		if (scratch.size() > 0) {
+			moveOptions = (ArrayList<Coord>) scratch.clone();
+		}
+		if (isThereOptimalPath(moveOptions)) {
 			return optimalPath;
 		} else {
-			return coordToDirection(scratch.get(0));
+			return coordToDirection(moveOptions.get(0));
 		}
 		
 	}
@@ -118,7 +120,7 @@ public class MoveSelector {
 			System.out.println("Optimal Path Found: " + optimalPath + ", " + moveOptions.get(0));
 			return true;
 		}
-		
+		optimalPath = coordToDirection(moveOptions.get(0));
 		return false;
 		
 	}
