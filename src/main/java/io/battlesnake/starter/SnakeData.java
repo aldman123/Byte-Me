@@ -6,6 +6,7 @@ public class SnakeData {
 	private String name;
 	private int health;
 	private Coord[] body;
+	
 	public SnakeData(JsonNode rawData) {
 		id = rawData.get("id").asText();
 		name = rawData.get("name").asText();
@@ -32,11 +33,15 @@ public class SnakeData {
 		return health;
 	}
 	
+	public int getSize() {
+		return body.length;
+	}
+	
 	public Coord[] getBody() {
 		return body;
 	}
 	
 	public Coord getHead() {
-		return body[0]; //No idea if this is right...
+		return body[0];
 	}
 }
