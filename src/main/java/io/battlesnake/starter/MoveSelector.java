@@ -3,7 +3,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.io.PrintWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.ArrayList;
 
 public class MoveSelector {
@@ -19,24 +20,26 @@ public class MoveSelector {
 	private SnakeData self;
 	private ArrayList<Coord> moveOptions, scratch, scratch2;
 	private String optimalPath = up;
+	private Queue<Coord> checkBoard = new LinkedList<>();
 	
 	public String selectMove(JsonNode moveRequest) {
 		String turn = moveRequest.get("turn").asText();
 		this.boardData = new BoardData(moveRequest);
 		board = boardData.getBoard();
 		self = boardData.getSelf();
-		saveToFile(boardData, "Board_On_Move_" + turn);
+		//saveToFile(boardData, "Board_On_Move_" + turn);
 		return valueRanking();
 	}
 	
 	private String valueRanking() {
 		int x = self.getHead().getX();
 		int y = self.getHead().getY();
+		checkBoard.add(new Coord(x,y));
 		System.out.println("Self: {" + x + ", " + y + "}");
 		moveOptions = boardData.getAdjacent(x, y);
 		System.out.println("L1: " + moveOptions.toString());
 		if (isThereOptimalPath(moveOptions)) {
-			return optimalPath;
+			return optimalPath; 
 		}
 		
 		//L2	Don't go adjacent to wall or snake
@@ -62,7 +65,7 @@ public class MoveSelector {
 		}
 		
 		if (isThereOptimalPath(scratch)) {
-			return optimalPath;
+			return optimalPath; 
 		} else if (scratch.size() < moveOptions.size()) {
 			moveOptions = (ArrayList<Coord>) scratch.clone();
 		}
@@ -99,15 +102,48 @@ public class MoveSelector {
 				scratch.add(c);
 			}
 		}
+		
 		if (scratch.size() > 0) {
 			moveOptions = (ArrayList<Coord>) scratch.clone();
 		}
 		if (isThereOptimalPath(moveOptions)) {
 			return optimalPath;
+			
+		
 		} else {
-			return coordToDirection(moveOptions.get(0));
+			//return coordToDirection(moveOptions.get(0));
+			return volumeFormula(moveOptions);
 		}
 		
+		
+		
+		
+	}
+	/*Returns a direction to move if there is more than one option*
+	  Returns String - up, down, left, or right*/
+	private String volumeFormula(ArrayList<Coord> moveOptions){
+		if(self.getHealth() < 25){
+			for(Coord c : moveOptions){
+				checkBoard.add(c);
+			}
+			return starvingDirection();
+		}
+		return coordToDirection(moveOptions.get(0));
+	}
+	
+	//returns direction to closest food
+	private String starvingDirection(){
+		Coord tempCoord = checkBoard.remove();
+		if(boardData.get(tempCoord) == 1){
+			return coordToDirection(tempCoord);
+		}
+		
+		ArrayList<Coord> tempArray= boardData.getAdjacent(tempCoord.getX(), tempCoord.getY());
+				
+		for(Coord c : tempArray){
+			checkBoard.add(c);
+		}
+		return starvingDirection();
 	}
 	
 	private boolean isThereOptimalPath(ArrayList<Coord> moveOptions) {
@@ -126,18 +162,33 @@ public class MoveSelector {
 	}
 	
 	private String coordToDirection(Coord point) {
-		if (point.getX() - self.getHead().getX() < 0) {
-			return left;
-		} else if (point.getX() - self.getHead().getX() > 0) {
-			return right;
-		} else if (point.getY() - self.getHead().getY() < 0) {
-			return up;
-		} else if (point.getY() - self.getHead().getY() > 0) {
-			return down;
-		} else {
-			System.out.println('\n' + "CoordToDirection Error" + '\n');
-			return up;
+		int headY = self.getHead().getY();
+		int headX = self.getHead().getX();
+		Coord tempCoord;
+		
+		if (point.getX() - self.getHead().getX() < 0)  {
+			tempCoord = new Coord(headX - 1, headY);
+			if(boardData.get(tempCoord) == 1 || boardData.get(tempCoord) == 0)
+				return left;
 		}
+		if (point.getX() - self.getHead().getX() > 0) {
+			tempCoord = new Coord(headX + 1, headY);
+			if(boardData.get(tempCoord) == 1 || boardData.get(tempCoord) == 0)
+				return right;
+		} 
+		if (point.getY() - self.getHead().getY() < 0) {
+			tempCoord = new Coord(headX, headY - 1);
+			if(boardData.get(tempCoord) == 1 || boardData.get(tempCoord) == 0)
+				return up;
+		}
+		if (point.getY() - self.getHead().getY() > 0) {
+			tempCoord = new Coord(headX, headY + 1);
+			if(boardData.get(tempCoord) == 1 || boardData.get(tempCoord) == 0)
+				return down;
+		}
+		System.out.println('\n' + "CoordToDirection Error" + '\n');
+		return up;
+		
 	}
 	
 	
@@ -174,11 +225,7 @@ public class MoveSelector {
 	}
 	
 	private PrintWriter createSaveFile(String fileName) {
-		file = new File (
-		"C:\\Users\\alexa\\Documents\\BattleSnakes" +
-			"\\starter-snake-java\\src\\main\\java\\io\\battlesnake\\starter" +
-			 "\\JsonNodeLog\\" + fileName + ".txt"
-			);
+		file = new File (fileName + ".txt");
 		try {
 			printWriter = new PrintWriter(file);
 		} catch (FileNotFoundException e) {
