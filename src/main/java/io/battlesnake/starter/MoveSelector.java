@@ -159,20 +159,21 @@ public class MoveSelector {
 		
 	}
 	
+	private ArrayList<Coord> foodCoords = new ArrayList<>();
 	//returns direction to closest food
 	//returns String up, down, left, or right
 	private String starvingDirection(){
-		ArrayList<Coord> foodCoords = new ArrayList<>();
+		
+		
+		
+		getFoodDirs();
+		
+		return calcStarvingDir();
+		
+	}
+	
+	private String calcStarvingDir(){
 		int dist = 0;
-		
-		for(int x = 0; x < board.length; x++){
-			for(int y = 0; y < board[x].length; y++){
-				if(boardData.get(x,y) == 1){
-					foodCoords.add(new Coord(x,y));
-				}
-			}
-		}
-		
 		int[] absDist = new int[foodCoords.size()];
 		int num = 0;
 		for(int i = 0; i < absDist.length; i++){
@@ -187,7 +188,16 @@ public class MoveSelector {
 		}
 		
 		return coordToDirection(foodCoords.get(dist));
-		
+	}
+	
+	private void getFoodDirs(){
+		for(int x = 0; x < board.length; x++){
+			for(int y = 0; y < board[x].length; y++){
+				if(boardData.get(x,y) == 1){
+					foodCoords.add(new Coord(x,y));
+				}
+			}
+		}
 	}
 	
 	//finds the interger value of the volume in that direction
@@ -258,22 +268,7 @@ public class MoveSelector {
 			
 			addCheckDir(adjDirs, count);
 		}
-		/*
-		for(Coord c : tempDirs){
-			adjDirs = boardData.getAdjacent(c.getX(), c.getY());
-			for(Coord k : adjDirs){
-				if(boardData.get(k) < 2){
-					dirs.add(k);
-					adj2Dirs = boardData.getAdjacent(c.getX(), c.getY());
-					for(Coord l : adj2Dirs){
-						if(boardData.get(l) < 2){
-							dirs.add(l);
-						}
-					}
-				}
-			}
-		}
-		*/
+		
 	}
 	
 	private boolean isThereOptimalPath(ArrayList<Coord> moveOptions) {
@@ -317,6 +312,10 @@ public class MoveSelector {
 				return down;
 		}
 		System.out.println('\n' + "CoordToDirection Error" + '\n');
+		if(foodCoords.size() > 0){
+			foodCoords.remove(point);
+			return calcStarvingDir();
+		}
 		return up;
 		
 	}
