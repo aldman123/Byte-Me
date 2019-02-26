@@ -196,7 +196,7 @@ public class MoveSelector {
 	private int valueOfDirection(Coord direction, int value){
 		
 		ArrayList<Coord> dirToCheck= boardData.getAdjacent(direction.getX(), direction.getY());
-		addCheckDir(dirToCheck, 10);
+		addCheckDir(dirToCheck, 4);
 		
 		ArrayList<Coord> newList = new ArrayList<>();
 		newList.add(dirToCheck.get(1));
@@ -227,15 +227,38 @@ public class MoveSelector {
 		
 	}
 	
+	
+	private ArrayList<Coord> adjDirs = new ArrayList<>();
+	private ArrayList<Coord> badAdjDirs = new ArrayList<>();
+	
 	private void addCheckDir(ArrayList<Coord> dirs, int count){
 		count--;
 		if(count < 1){
 			return;
 		}
-		ArrayList<Coord> tempDirs = (ArrayList<Coord>) dirs.clone();
-		ArrayList<Coord> adjDirs = new ArrayList<>();
-		ArrayList<Coord> adj2Dirs = new ArrayList<>();
+		if(dirs.size() < 1){
+			return;
+		}
 		
+		ArrayList<Coord> tempDirs = (ArrayList<Coord>) dirs.clone();
+		
+		for(Coord c : tempDirs){
+			adjDirs = boardData.getAdjacent(c.getX(), c.getY());
+			for(Coord k : adjDirs){
+				if(boardData.get(k) < 2 && !dirs.contains(k)){
+					dirs.add(k);
+				} else {
+					badAdjDirs.add(k);
+				}
+					
+			}
+			for(Coord j : badAdjDirs){
+				adjDirs.remove(j);
+			}
+			
+			addCheckDir(adjDirs, count);
+		}
+		/*
 		for(Coord c : tempDirs){
 			adjDirs = boardData.getAdjacent(c.getX(), c.getY());
 			for(Coord k : adjDirs){
@@ -250,6 +273,7 @@ public class MoveSelector {
 				}
 			}
 		}
+		*/
 	}
 	
 	private boolean isThereOptimalPath(ArrayList<Coord> moveOptions) {
