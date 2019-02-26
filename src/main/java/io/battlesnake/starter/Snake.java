@@ -99,6 +99,11 @@ public class Snake {
 			} else if (deltaTime < minDeltaTime) {
 				minDeltaTime = deltaTime;
 			}
+			/*Tia McDowells Addition for decode perposes. Remove when convenuent*/
+			if(deltaTime > 250){
+				System.out.println("\n\n\n TAKES TOO LONG!!!! \n\n\n\n");
+			}
+			/*End of Tia McDowell's addition*/
 			System.out.println('\n'+"Elapsed time: " + (deltaTime) + '\n');
 				return snakeResponse;
             } catch (Exception e) {

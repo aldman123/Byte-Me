@@ -227,10 +227,7 @@ public class MoveSelector {
 		dirToCheck.addAll(newList);
 		
 		for(Coord c : dirToCheck){
-			if(boardData.get(c) < 2){
-				System.out.println("\n COORDANATE OF VALUE ADD " + c);
-				value++;
-			}
+			value++;
 		}
 		
 		return value;
