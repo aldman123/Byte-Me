@@ -3,11 +3,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.io.PrintWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.*;
 import java.util.ArrayList;
+import java.lang.Math;
 
 public class MoveSelector {
 	private final String up = "up";
@@ -15,7 +13,7 @@ public class MoveSelector {
 	private final String left = "left";
 	private final String right = "right";
 	
-	private PrintWriter printWriter = null;
+
 	private File file;
 	private BoardData boardData;
 	private int[][] board;
@@ -29,7 +27,6 @@ public class MoveSelector {
 		this.boardData = new BoardData(moveRequest);
 		board = boardData.getBoard();
 		self = boardData.getSelf();
-		//saveToFile(boardData, "Board_On_Move_" + turn);
 		return valueRanking();
 	}
 	
@@ -127,10 +124,11 @@ public class MoveSelector {
 	private String volumeFormula(ArrayList<Coord> moveOptions){
 		
 		
-		if(self.getHealth() < 25){
+		if(self.getHealth() < 30){
 			for(Coord c : moveOptions){
-			checkBoard.add(c);
-		}
+				checkBoard.add(c);
+			}
+			
 			return starvingDirection();
 		}
 		
@@ -156,7 +154,7 @@ public class MoveSelector {
 				max = i;
 			}
 		}
-		System.out.println("\n \n MOVE OPTIONS : " + moveOptions + "\n");
+		System.out.println("\n \n \n MOVE OPTIONS ( " + moveOptions + ": AT " + max + " IS " + moveOptions.get(max) + "\n \n");
 		return coordToDirection(moveOptions.get(max));
 		
 	}
@@ -164,17 +162,32 @@ public class MoveSelector {
 	//returns direction to closest food
 	//returns String up, down, left, or right
 	private String starvingDirection(){
-		Coord tempCoord = checkBoard.remove();
-		if(boardData.get(tempCoord) == 1){
-			return coordToDirection(tempCoord);
+		ArrayList<Coord> foodCoords = new ArrayList<>();
+		int dist = 0;
+		
+		for(int x = 0; x < board.length; x++){
+			for(int y = 0; y < board[x].length; y++){
+				if(boardData.get(x,y) == 1){
+					foodCoords.add(new Coord(x,y));
+				}
+			}
 		}
 		
-		ArrayList<Coord> tempArray= boardData.getAdjacent(tempCoord.getX(), tempCoord.getY());
-				
-		for(Coord c : tempArray){
-			checkBoard.add(c);
+		int[] absDist = new int[foodCoords.size()];
+		int num = 0;
+		for(int i = 0; i < absDist.length; i++){
+			num = (Math.abs(self.getHead().getX() - foodCoords.get(i).getX()) + Math.abs(self.getHead().getY() - foodCoords.get(i).getY()));
+			absDist[i] = num;
 		}
-		return starvingDirection();
+		
+		for(int i = 0; i < absDist.length; i++){
+			if(absDist[dist] > absDist[i]){
+				dist = i;
+			}
+		}
+		
+		return coordToDirection(foodCoords.get(dist));
+		
 	}
 	
 	//finds the interger value of the volume in that direction
@@ -182,39 +195,61 @@ public class MoveSelector {
 	
 	private int valueOfDirection(Coord direction, int value){
 		
-		
 		ArrayList<Coord> dirToCheck= boardData.getAdjacent(direction.getX(), direction.getY());
+		addCheckDir(dirToCheck, 10);
 		
-		ArrayList<Coord> tempDirToCheck= (ArrayList<Coord>) dirToCheck.clone();
-		
-		dirToCheck.add(direction);
-				
-		for(Coord c : tempDirToCheck){
-			ArrayList<Coord> tempArray= boardData.getAdjacent(c.getX(), c.getY());
-			for(Coord k : tempArray){
-				dirToCheck.add(k);
+		ArrayList<Coord> newList = new ArrayList<>();
+		newList.add(dirToCheck.get(1));
+		boolean isIn;
+		for(Coord c : dirToCheck){
+			isIn = false;
+			for(Coord k : newList){
+				if(c.equels(k)){
+					isIn = true;
+				}
+			}
+			if(!isIn){
+				newList.add(c);
 			}
 		}
 		
-		Set<Coord> set = new HashSet<>(dirToCheck);
 		dirToCheck.clear();
-		dirToCheck.addAll(set);
-		
+		dirToCheck.addAll(newList);
 		
 		for(Coord c : dirToCheck){
-			switch(boardData.get(c)){
-				case 0:
-					value++;
-					break;
-				case 1:
-					value+=2;
-					break;	
+			if(boardData.get(c) < 2){
+				System.out.println("\n COORDANATE OF VALUE ADD " + c);
+				value++;
 			}
 		}
 		
 		return value;
 		
+	}
+	
+	private void addCheckDir(ArrayList<Coord> dirs, int count){
+		count--;
+		if(count < 1){
+			return;
+		}
+		ArrayList<Coord> tempDirs = (ArrayList<Coord>) dirs.clone();
+		ArrayList<Coord> adjDirs = new ArrayList<>();
+		ArrayList<Coord> adj2Dirs = new ArrayList<>();
 		
+		for(Coord c : tempDirs){
+			adjDirs = boardData.getAdjacent(c.getX(), c.getY());
+			for(Coord k : adjDirs){
+				if(boardData.get(k) < 2){
+					dirs.add(k);
+					adj2Dirs = boardData.getAdjacent(c.getX(), c.getY());
+					for(Coord l : adj2Dirs){
+						if(boardData.get(l) < 2){
+							dirs.add(l);
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	private boolean isThereOptimalPath(ArrayList<Coord> moveOptions) {
@@ -239,22 +274,22 @@ public class MoveSelector {
 		
 		if (point.getX() - self.getHead().getX() < 0)  {
 			tempCoord = new Coord(headX - 1, headY);
-			if(boardData.get(tempCoord) == 1 || boardData.get(tempCoord) == 0)
+			if(boardData.get(tempCoord) < 2)
 				return left;
 		}
 		if (point.getX() - self.getHead().getX() > 0) {
 			tempCoord = new Coord(headX + 1, headY);
-			if(boardData.get(tempCoord) == 1 || boardData.get(tempCoord) == 0)
+			if(boardData.get(tempCoord) < 2)
 				return right;
 		} 
 		if (point.getY() - self.getHead().getY() < 0) {
 			tempCoord = new Coord(headX, headY - 1);
-			if(boardData.get(tempCoord) == 1 || boardData.get(tempCoord) == 0)
+			if(boardData.get(tempCoord) < 2)
 				return up;
 		}
 		if (point.getY() - self.getHead().getY() > 0) {
 			tempCoord = new Coord(headX, headY + 1);
-			if(boardData.get(tempCoord) == 1 || boardData.get(tempCoord) == 0)
+			if(boardData.get(tempCoord) < 2)
 				return down;
 		}
 		System.out.println('\n' + "CoordToDirection Error" + '\n');
@@ -263,48 +298,5 @@ public class MoveSelector {
 	}
 	
 	
-	public void saveToFile(String output, String fileName) {
-		String[] arr = {output};
-		saveToFile(arr, fileName);
-	}
-	
-	
-	private void saveToFile(String[] output, String fileName) {
-		PrintWriter file = createSaveFile(fileName);
-		for (String s : output) {
-			printWriter.println(s);
-		}
-		printWriter.close();
-	}
-	
-	private void saveToFile(BoardData boardData, String fileName) {
-		PrintWriter file = createSaveFile(fileName);
-		file.println("Current State of Board");
-		int[][] rawBoard = boardData.getBoard();
-		for (int j = 0; j < rawBoard[0].length; j++) {
-			String line = "{";
-			for (int i = 0; i < rawBoard.length - 1; i++) {
-				line += rawBoard[i][j] + ", ";
-			}
-			line += rawBoard[rawBoard.length - 1][j] + "}";
-			
-			file.println(line);
-		}
-		
-		file.close();
-		
-	}
-	
-	private PrintWriter createSaveFile(String fileName) {
-		file = new File (fileName + ".txt");
-		try {
-			printWriter = new PrintWriter(file);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return printWriter;
-	}
 		
 }

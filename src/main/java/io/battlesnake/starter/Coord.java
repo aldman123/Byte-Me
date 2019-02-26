@@ -27,4 +27,11 @@ public class Coord{
 	public String toString() {
 		return "{" + x + ", " + y + "}";
 	}
+	
+	public boolean equels(Coord c){
+		if(x == c.getX() && y == c.getY()){
+			return true;
+		}
+		return false;
+	}
 }
