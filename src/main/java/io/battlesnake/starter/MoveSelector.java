@@ -4,8 +4,6 @@ import java.io.PrintWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.lang.Math;
 
 public class MoveSelector {
@@ -13,7 +11,6 @@ public class MoveSelector {
 	private final String down = "down";
 	private final String left = "left";
 	private final String right = "right";
-	
 
 	private File file;
 	private BoardData boardData;
@@ -220,7 +217,7 @@ public class MoveSelector {
 			return;
 		}
 		
-		ArrayList<Coord> tempDirs = (ArrayList<Coord>) dirs.clone();
+		ArrayList<Coord> tempDirs = (ArrayList<Coord>)dirs.clone();
 		
 		for(Coord c : tempDirs){
 			adjDirs = boardData.getAdjacent(c.getX(), c.getY());
@@ -230,15 +227,12 @@ public class MoveSelector {
 				} else {
 					badAdjDirs.add(k);
 				}
-					
 			}
 			for(Coord j : badAdjDirs){
 				adjDirs.remove(j);
 			}
-			
 			addCheckDir(adjDirs, count);
 		}
-		
 	}
 	
 	private boolean isThereOptimalPath(ArrayList<Coord> moveOptions) {
