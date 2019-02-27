@@ -11,51 +11,77 @@ public class CustomTestCases {
 	private static final String right = "right";
 	
 	private static ObjectMapper mapper;
-	private static JsonNodeFactory;
 	private static MoveSelector byteMe;
 	
 	public CustomTestCases() {
 		mapper = new ObjectMapper();
 		byteMe = new MoveSelector();
-		jsonNodeFacotry = new JsonNodeFactory();
 	}
 	
 	
 	public JsonNode case1() {
-		ArrayNode ourBody, scratch;
-		ourBody = jsonNodeFactory.ArrayNode();
-		scratch = jsonNodeFactory.ArrayNode();
-		scratch.add(1);	//X
-		scratch.add(0);	//Y
-		ourBody.add(scratch);
-		scratch = jsonNodeFactory.ArrayNode();
-		scratch.add(2);	//X
-		scratch.add(0);	//Y
-		ourBody.add(scratch);
-		scratch = jsonNodeFactory.ArrayNode();
-		scratch.add(2);	//X
-		scratch.add(1);	//Y
-		ourBody.add(scratch);
-		scratch = jsonNodeFactory.ArrayNode();
-		scratch.add(2);	//X
-		scratch.add(2);	//Y
-		ourBody.add(scratch);
-		scratch = jsonNodeFactory.ArrayNode();
-		scratch.add(1);	//X
-		scratch.add(2);	//Y
-		ourBody.add(scratch);
-		scratch = jsonNodeFactory.ArrayNode();
+		ObjectNode gameState = mapper.createObjectNode();
 		
-		System.out.println(ourBody);
+		ObjectNode game = mapper.createObjectNode();
+		game.put("id", "Test Case 1");
+		gameState.put("game", game);
 		
-		ArrayNode you = jsonNodeFactory;
+		gameState.put("turn", 10);
 		
+		ObjectNode board = mapper.createObjectNode();
+			board.put("height", 3);
+			board.put("width", 3);
+			ObjectNode foodCoords = mapper.createObjectNode();
+				ArrayNode food = mapper.createArrayNode();
+				food.put("x", 1);
+				food.put("y", 1);
+				foodCoords.add(food);
+			board.putArray("food", foodCoords);
+			ArrayNode snakes = mapper.createArrayNode();
+				
+		ObjectNode you = mapper.createObjectNode();
+			you.put("id", "self");
+			you.put("name", "Byte-Me");
+			you.put("health", 90);
+			
+			ObjectNode body = mapper.createObjectNode();
+			ArrayNode ourBody = mapper.createArrayNode();
+			body.put("x", 1);
+			body.put("y", 0);
+			ourBody.add(body);
+		
+			body = mapper.createObjectNode();
+			body.put("x", 2);
+			body.put("y", 0);
+			ourBody.add(body);
+		
+			body = mapper.createObjectNode();
+			body.put("x", 2);
+			body.put("y", 1);
+			ourBody.add(body);
+		
+			body = mapper.createObjectNode();
+			body.put("x", 2);
+			body.put("y", 2);
+			ourBody.add(body);
+		
+			body = mapper.createObjectNode();
+			body.put("x", 1);
+			body.put("y", 2);
+			ourBody.add(body);
+			you.putArray("body", ourBody);
+		snakes.add(you);
+			
+			
+		
+		/*
 		PsudoSnake you = new PsudoSnake("1", "Self_Case1", 100, ourBody);
 		PsudoSnake[] snakes = {you};
 		Coord[] food = {new Coord(0,2), new Coord(1,1)};
 		Board board = new Board(3, 3, food, snakes);
 		Game game = new Game("Case1");
 		CustomGameState data = new CustomGameState(game, 10, board, you);
+		*/
 		//JsonNode jsonNode = mapper.valueToTree(data);
 		objectMapper.writeValue(new File("target/scratch.json"), data);
 		
