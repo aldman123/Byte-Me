@@ -110,6 +110,10 @@ import java.util.ArrayList;
 		return getAdjacent(c.getX(), c.getY());
 	}
 	
+	protected Coord[] getFood(){
+		return food;
+	}
+	
 	protected ArrayList<Coord> getAdjacent(int x, int y) {
 		ArrayList<Coord> scratch = new ArrayList<Coord>();
 		if (get(x-1,y) < 4) {

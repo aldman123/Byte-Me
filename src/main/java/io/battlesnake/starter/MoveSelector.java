@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.lang.Math;
 
 public class MoveSelector {
@@ -18,9 +19,10 @@ public class MoveSelector {
 	private BoardData boardData;
 	private int[][] board;
 	private SnakeData self;
-	private ArrayList<Coord> moveOptions, scratch, scratch2;
+	private ArrayList<Coord> moveOptions, scratch, scratch2, foodCoords, adjDirs;
 	private String optimalPath = up;
-	private Queue<Coord> checkBoard = new LinkedList<>();
+	private ArrayList<Coord> badAdjDirs = new ArrayList<>();
+	
 	
 	public String selectMove(JsonNode moveRequest) {
 		String turn = moveRequest.get("turn").asText();
@@ -33,7 +35,6 @@ public class MoveSelector {
 	private String valueRanking() {
 		int x = self.getHead().getX();
 		int y = self.getHead().getY();
-		checkBoard.add(new Coord(x,y));
 		//System.out.println("Self: {" + x + ", " + y + "}");
 		moveOptions = boardData.getAdjacent(x, y);
 		//System.out.println("L1: " + moveOptions.toString());
@@ -107,10 +108,7 @@ public class MoveSelector {
 		}
 		if (isThereOptimalPath(moveOptions)) {
 			return optimalPath;
-			
-		
 		} else {
-			//return coordToDirection(moveOptions.get(0));
 			return volumeFormula(moveOptions);
 		}
 		
@@ -124,16 +122,10 @@ public class MoveSelector {
 	private String volumeFormula(ArrayList<Coord> moveOptions){
 		
 		
-		if(self.getHealth() < 30){
-			for(Coord c : moveOptions){
-				checkBoard.add(c);
-			}
-			
+		if(self.getHealth() < 50){
 			return starvingDirection();
 		}
-		
 		return findVolume();
-		//return coordToDirection(moveOptions.get(0));
 	}
 	
 	
@@ -146,7 +138,6 @@ public class MoveSelector {
 			
 		for(int i = 0; i < directions.length; i++){
 			directions[i] = valueOfDirection(moveOptions.get(i), 0);
-			System.out.println("\n DIRECTIONS: " + moveOptions.get(i) + " VALUE: " +directions[i] + "\n");
 		}
 		
 		for(int i = 0; i < directions.length; i++){
@@ -154,22 +145,17 @@ public class MoveSelector {
 				max = i;
 			}
 		}
-		System.out.println("\n \n \n MOVE OPTIONS ( " + moveOptions + ": AT " + max + " IS " + moveOptions.get(max) + "\n \n");
+		
 		return coordToDirection(moveOptions.get(max));
 		
 	}
 	
-	private ArrayList<Coord> foodCoords = new ArrayList<>();
+	
 	//returns direction to closest food
 	//returns String up, down, left, or right
 	private String starvingDirection(){
-		
-		
-		
-		getFoodDirs();
-		
+		foodCoords = new ArrayList<Coord>(Arrays.asList(boardData.getFood()));
 		return calcStarvingDir();
-		
 	}
 	
 	private String calcStarvingDir(){
@@ -188,16 +174,6 @@ public class MoveSelector {
 		}
 		
 		return coordToDirection(foodCoords.get(dist));
-	}
-	
-	private void getFoodDirs(){
-		for(int x = 0; x < board.length; x++){
-			for(int y = 0; y < board[x].length; y++){
-				if(boardData.get(x,y) == 1){
-					foodCoords.add(new Coord(x,y));
-				}
-			}
-		}
 	}
 	
 	//finds the interger value of the volume in that direction
@@ -234,9 +210,6 @@ public class MoveSelector {
 		
 	}
 	
-	
-	private ArrayList<Coord> adjDirs = new ArrayList<>();
-	private ArrayList<Coord> badAdjDirs = new ArrayList<>();
 	
 	private void addCheckDir(ArrayList<Coord> dirs, int count){
 		count--;
@@ -290,31 +263,44 @@ public class MoveSelector {
 		
 		if (point.getX() - self.getHead().getX() < 0)  {
 			tempCoord = new Coord(headX - 1, headY);
-			if(boardData.get(tempCoord) < 2)
+			if(boardData.get(tempCoord) < 2){
+				
 				return left;
+			}
 		}
 		if (point.getX() - self.getHead().getX() > 0) {
 			tempCoord = new Coord(headX + 1, headY);
-			if(boardData.get(tempCoord) < 2)
+			if(boardData.get(tempCoord) < 2){
+				
 				return right;
+			}
 		} 
 		if (point.getY() - self.getHead().getY() < 0) {
 			tempCoord = new Coord(headX, headY - 1);
-			if(boardData.get(tempCoord) < 2)
+			if(boardData.get(tempCoord) < 2){
+				
 				return up;
+			}
 		}
 		if (point.getY() - self.getHead().getY() > 0) {
 			tempCoord = new Coord(headX, headY + 1);
-			if(boardData.get(tempCoord) < 2)
+			if(boardData.get(tempCoord) < 2){
+				
 				return down;
+			}
 		}
-		System.out.println('\n' + "CoordToDirection Error" + '\n');
+		
+		foodCoords.remove(point);
 		if(foodCoords.size() > 0){
-			foodCoords.remove(point);
 			return calcStarvingDir();
 		}
-		return up;
-		
+		try{
+			return coordToDirection(moveOptions.get(0));
+		} catch (IndexOutOfBoundsException e){
+			//System.out.println('\n' + "CoordToDirection Error" + '\n');
+			
+			return up;
+		}
 	}
 	
 	
