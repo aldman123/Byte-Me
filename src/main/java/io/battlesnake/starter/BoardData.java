@@ -8,8 +8,14 @@ import java.util.ArrayList;
  * Created by Alexander Aldridge
  */
  public class BoardData {
+	private final int SNAKE_BODY = 5;
+	private final int SNAKE_TAIL = 4;
+	private final int SNAKE_HEAD = 3;
+	private final int OUR_HEAD = 2;
+	private final int FOOD = 1;
+	private final int FREE = 0;
 	private String gameID;
-	private int[][] board; //0 = free, 1 = food, 2 = our head, 3 = snake head, 4 = snake body
+	private int[][] board;
 	private int turnNumber;
 	private SnakeData[] snakes;
 	private SnakeData self;
@@ -19,6 +25,7 @@ import java.util.ArrayList;
 		gameID = rawData.get("game").get("id").asText();
 		JsonNode rawBoard = rawData.get("board");
 		JsonNode rawFood = rawBoard.get("food");
+		turnNumber = rawData.get("turn").asInt();
 		board = new int[rawBoard.get("width").asInt()][rawBoard.get("height").asInt()];
 		
 		food = new Coord[rawFood.size()];
@@ -42,20 +49,23 @@ import java.util.ArrayList;
 		for (SnakeData s : snakes) {
 			//Sets all snake parts to be 4
 			for (Coord p : s.getBody()) {
-				board[p.getX()][p.getY()] = 4;
+				board[p.getX()][p.getY()] = SNAKE_BODY;
 			}
 			
 			//Sets enemy snake heads to be 3
-			board[s.getHead().getX()][s.getHead().getY()] = 3;
+			board[s.getHead().getX()][s.getHead().getY()] = SNAKE_HEAD;
+			if (turnNumber > 3) {
+				board[s.getTail().getX()][s.getTail().getY()] = SNAKE_TAIL;
+			}
 		}
 		
 		
 		//Sets our head to be 2
-		board[self.getHead().getX()][self.getHead().getY()] = 2;
+		board[self.getHead().getX()][self.getHead().getY()] = OUR_HEAD;
 		
 		//Sets food to be 1
 		for (Coord p : food){
-			board[p.getX()][p.getY()] = 1;
+			board[p.getX()][p.getY()] = FOOD;
 		}
 	}
 	
@@ -112,16 +122,16 @@ import java.util.ArrayList;
 	
 	protected ArrayList<Coord> getAdjacent(int x, int y) {
 		ArrayList<Coord> scratch = new ArrayList<Coord>();
-		if (get(x-1,y) < 4) {
+		if (get(x-1,y) < SNAKE_BODY) {
 			scratch.add(new Coord(x-1,y));
 		}
-		if (get(x+1,y) < 4) {
+		if (get(x+1,y) < SNAKE_BODY) {
 			scratch.add(new Coord(x+1,y));
 		}
-		if (get(x,y-1) < 4) {
+		if (get(x,y-1) < SNAKE_BODY) {
 			scratch.add(new Coord(x, y-1));
 		}
-		if (get(x,y+1) < 4) {
+		if (get(x,y+1) < SNAKE_BODY) {
 			scratch.add(new Coord(x, y+1));
 		}
 		return scratch;

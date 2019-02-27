@@ -44,4 +44,8 @@ public class SnakeData {
 	public Coord getHead() {
 		return body[0];
 	}
+	
+	public Coord getTail() {
+		return body[body.length - 1];
+	}
 }

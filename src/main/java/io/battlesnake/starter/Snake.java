@@ -138,9 +138,17 @@ public class Snake {
          */
         public Map<String, String> move(JsonNode moveRequest) {
 			System.out.println('\n' + "Move number: " + moveRequest.get("turn") + '\n');
-            Map<String, String> response = new HashMap<>();
-            response.put("move", moveDecider.selectMove(moveRequest));
-            return response;
+			Map<String, String> response = new HashMap<>();
+			if (moveDecider == null) {
+				moveDecider = new MoveSelector();
+			}
+			response.put("move", moveDecider.selectMove(moveRequest));
+			
+			//For test cases only
+			if (moveRequest.get("desiredOutcome") != null) {
+				response.put("desiredOutcome", moveRequest.get("desiredOutcome").asText());
+			}
+			return response;
         }
 
         /**

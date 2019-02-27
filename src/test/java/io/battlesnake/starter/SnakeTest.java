@@ -35,14 +35,17 @@ public class SnakeTest {
     void startTest() throws IOException {
         JsonNode startRequest = OBJECT_MAPPER.readTree("{}");
         Map<String, String> response = handler.start(startRequest);
-        assertEquals("#ff00ff", response.get("color"));
+        assertEquals("#767E85", response.get("color"));
     }
 
     @Test
     void moveTest() throws IOException {
-        JsonNode moveRequest = OBJECT_MAPPER.readTree("{}");
-        Map<String, String> response = handler.move(moveRequest);
-        assertEquals("right", response.get("move"));
+		//Errors here may come from other classes, but maven says it's here :(
+		CustomTestCases tester = new CustomTestCases();
+		System.out.println("--Are Test Cases Working?--");
+        JsonNode moveRequest = tester.case1();
+		Map<String, String> response = handler.move(moveRequest);
+        assertEquals(response.get("desiredOutcome"), response.get("move"));
     }
 
     @Test

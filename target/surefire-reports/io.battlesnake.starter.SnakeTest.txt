@@ -1,12 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: io.battlesnake.starter.SnakeTest
 -------------------------------------------------------------------------------
-Tests run: 4, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.17 s <<< FAILURE! - in io.battlesnake.starter.SnakeTest
-startTest  Time elapsed: 0.034 s  <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: <#ff00ff> but was: <#767E85>
-	at io.battlesnake.starter.SnakeTest.startTest(SnakeTest.java:38)
-
-moveTest  Time elapsed: 0.001 s  <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: <right> but was: <down>
-	at io.battlesnake.starter.SnakeTest.moveTest(SnakeTest.java:45)
-
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.305 s - in io.battlesnake.starter.SnakeTest
