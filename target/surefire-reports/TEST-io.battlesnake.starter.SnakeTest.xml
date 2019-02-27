@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="io.battlesnake.starter.SnakeTest" time="0.209" tests="4" errors="1" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="io.battlesnake.starter.SnakeTest" time="0.305" tests="4" errors="0" skipped="0" failures="0">
   <properties>
     <property name="sun.desktop" value="windows"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
@@ -18,7 +18,7 @@
     <property name="user.country" value="US"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_161\jre\bin"/>
-    <property name="sun.java.command" value="C:\Users\alexa\AppData\Local\Temp\surefire3388817475556293253\surefirebooter7901045412244242764.jar C:\Users\alexa\AppData\Local\Temp\surefire3388817475556293253 2019-02-13T14-51-19_531-jvmRun1 surefire2368515017377415053tmp surefire_07689425207270753001tmp"/>
+    <property name="sun.java.command" value="C:\Users\alexa\AppData\Local\Temp\surefire6176658035826692102\surefirebooter6844934293031279648.jar C:\Users\alexa\AppData\Local\Temp\surefire6176658035826692102 2019-02-27T14-49-20_184-jvmRun1 surefire2097974749783561439tmp surefire_04648398443872222453tmp"/>
     <property name="surefire.test.class.path" value="C:\Users\alexa\Documents\BattleSnakes\starter-snake-java\target\test-classes;C:\Users\alexa\Documents\BattleSnakes\starter-snake-java\target\classes;C:\Users\alexa\.m2\repository\com\sparkjava\spark-core\2.7.2\spark-core-2.7.2.jar;C:\Users\alexa\.m2\repository\org\slf4j\slf4j-api\1.7.13\slf4j-api-1.7.13.jar;C:\Users\alexa\.m2\repository\org\eclipse\jetty\jetty-server\9.4.8.v20171121\jetty-server-9.4.8.v20171121.jar;C:\Users\alexa\.m2\repository\javax\servlet\javax.servlet-api\3.1.0\javax.servlet-api-3.1.0.jar;C:\Users\alexa\.m2\repository\org\eclipse\jetty\jetty-http\9.4.8.v20171121\jetty-http-9.4.8.v20171121.jar;C:\Users\alexa\.m2\repository\org\eclipse\jetty\jetty-util\9.4.8.v20171121\jetty-util-9.4.8.v20171121.jar;C:\Users\alexa\.m2\repository\org\eclipse\jetty\jetty-io\9.4.8.v20171121\jetty-io-9.4.8.v20171121.jar;C:\Users\alexa\.m2\repository\org\eclipse\jetty\jetty-webapp\9.4.8.v20171121\jetty-webapp-9.4.8.v20171121.jar;C:\Users\alexa\.m2\repository\org\eclipse\jetty\jetty-xml\9.4.8.v20171121\jetty-xml-9.4.8.v20171121.jar;C:\Users\alexa\.m2\repository\org\eclipse\jetty\jetty-servlet\9.4.8.v20171121\jetty-servlet-9.4.8.v20171121.jar;C:\Users\alexa\.m2\repository\org\eclipse\jetty\jetty-security\9.4.8.v20171121\jetty-security-9.4.8.v20171121.jar;C:\Users\alexa\.m2\repository\org\eclipse\jetty\websocket\websocket-server\9.4.8.v20171121\websocket-server-9.4.8.v20171121.jar;C:\Users\alexa\.m2\repository\org\eclipse\jetty\websocket\websocket-common\9.4.8.v20171121\websocket-common-9.4.8.v20171121.jar;C:\Users\alexa\.m2\repository\org\eclipse\jetty\websocket\websocket-client\9.4.8.v20171121\websocket-client-9.4.8.v20171121.jar;C:\Users\alexa\.m2\repository\org\eclipse\jetty\jetty-client\9.4.8.v20171121\jetty-client-9.4.8.v20171121.jar;C:\Users\alexa\.m2\repository\org\eclipse\jetty\websocket\websocket-servlet\9.4.8.v20171121\websocket-servlet-9.4.8.v20171121.jar;C:\Users\alexa\.m2\repository\org\eclipse\jetty\websocket\websocket-api\9.4.8.v20171121\websocket-api-9.4.8.v20171121.jar;C:\Users\alexa\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.8.11.1\jackson-databind-2.8.11.1.jar;C:\Users\alexa\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.8.0\jackson-annotations-2.8.0.jar;C:\Users\alexa\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.8.10\jackson-core-2.8.10.jar;C:\Users\alexa\.m2\repository\org\slf4j\slf4j-simple\1.7.21\slf4j-simple-1.7.21.jar;C:\Users\alexa\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.2.0\junit-jupiter-api-5.2.0.jar;C:\Users\alexa\.m2\repository\org\apiguardian\apiguardian-api\1.0.0\apiguardian-api-1.0.0.jar;C:\Users\alexa\.m2\repository\org\opentest4j\opentest4j\1.1.0\opentest4j-1.1.0.jar;C:\Users\alexa\.m2\repository\org\junit\platform\junit-platform-commons\1.2.0\junit-platform-commons-1.2.0.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="C:\Users\alexa"/>
@@ -31,7 +31,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
-    <property name="surefire.real.class.path" value="C:\Users\alexa\AppData\Local\Temp\surefire3388817475556293253\surefirebooter7901045412244242764.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\alexa\AppData\Local\Temp\surefire6176658035826692102\surefirebooter6844934293031279648.jar"/>
     <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.8.0_161\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_161\jre\lib\rt.jar;C:\Program Files\Java\jdk1.8.0_161\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.8.0_161\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.8.0_161\jre\lib\jce.jar;C:\Program Files\Java\jdk1.8.0_161\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.8.0_161\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.8.0_161\jre\classes"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
@@ -60,16 +60,8 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="52.0"/>
   </properties>
-  <testcase name="startTest" classname="io.battlesnake.starter.SnakeTest" time="0.027"/>
+  <testcase name="startTest" classname="io.battlesnake.starter.SnakeTest" time="0.034"/>
   <testcase name="endTest" classname="io.battlesnake.starter.SnakeTest" time="0"/>
   <testcase name="pingTest" classname="io.battlesnake.starter.SnakeTest" time="0"/>
-  <testcase name="moveTest" classname="io.battlesnake.starter.SnakeTest" time="0.029">
-    <error message="No serializer found for class io.battlesnake.starter.GameData.CustomGameState and no properties discovered to create BeanSerializer (to avoid exception, disable SerializationFeature.FAIL_ON_EMPTY_BEANS)" type="java.lang.IllegalArgumentException">java.lang.IllegalArgumentException: No serializer found for class io.battlesnake.starter.GameData.CustomGameState and no properties discovered to create BeanSerializer (to avoid exception, disable SerializationFeature.FAIL_ON_EMPTY_BEANS)
-	at io.battlesnake.starter.SnakeTest.moveTest(SnakeTest.java:45)
-Caused by: com.fasterxml.jackson.databind.JsonMappingException: No serializer found for class io.battlesnake.starter.GameData.CustomGameState and no properties discovered to create BeanSerializer (to avoid exception, disable SerializationFeature.FAIL_ON_EMPTY_BEANS)
-	at io.battlesnake.starter.SnakeTest.moveTest(SnakeTest.java:45)
-</error>
-    <system-out><![CDATA[--Are Test Cases Working?--
-]]></system-out>
-  </testcase>
+  <testcase name="moveTest" classname="io.battlesnake.starter.SnakeTest" time="0.027"/>
 </testsuite>

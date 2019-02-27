@@ -2,7 +2,6 @@ package io.battlesnake.starter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.battlesnake.starter.GameData.*;
 
 public class CustomTestCases {
 	private static final String up = "up";
@@ -11,11 +10,9 @@ public class CustomTestCases {
 	private static final String right = "right";
 	
 	private static ObjectMapper mapper;
-	private static MoveSelector byteMe;
 	
 	public CustomTestCases() {
 		mapper = new ObjectMapper();
-		byteMe = new MoveSelector();
 	}
 	
 	
@@ -31,13 +28,15 @@ public class CustomTestCases {
 		ObjectNode board = mapper.createObjectNode();
 			board.put("height", 3);
 			board.put("width", 3);
-			ObjectNode foodCoords = mapper.createObjectNode();
-				ArrayNode food = mapper.createArrayNode();
+			ArrayNode foodCoords = mapper.createArrayNode();
+				ObjectNode food = mapper.createObjectNode();
 				food.put("x", 1);
 				food.put("y", 1);
 				foodCoords.add(food);
-			board.putArray("food", foodCoords);
+			board.put("food", foodCoords);
 			ArrayNode snakes = mapper.createArrayNode();
+			board.put("snakes", snakes);
+		gameState.put("board", board);
 				
 		ObjectNode you = mapper.createObjectNode();
 			you.put("id", "self");
@@ -69,23 +68,12 @@ public class CustomTestCases {
 			body.put("x", 1);
 			body.put("y", 2);
 			ourBody.add(body);
-			you.putArray("body", ourBody);
+			you.put("body", ourBody);
 		snakes.add(you);
-			
-			
+		gameState.put("you", you);
+		gameState.put("desiredOutcome", "down");
 		
-		/*
-		PsudoSnake you = new PsudoSnake("1", "Self_Case1", 100, ourBody);
-		PsudoSnake[] snakes = {you};
-		Coord[] food = {new Coord(0,2), new Coord(1,1)};
-		Board board = new Board(3, 3, food, snakes);
-		Game game = new Game("Case1");
-		CustomGameState data = new CustomGameState(game, 10, board, you);
-		*/
-		//JsonNode jsonNode = mapper.valueToTree(data);
-		objectMapper.writeValue(new File("target/scratch.json"), data);
-		
-		return jsonNode;
+		return gameState;
 	}
 	
 }

@@ -1,10 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: io.battlesnake.starter.SnakeTest
 -------------------------------------------------------------------------------
-Tests run: 4, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.209 s <<< FAILURE! - in io.battlesnake.starter.SnakeTest
-moveTest  Time elapsed: 0.029 s  <<< ERROR!
-java.lang.IllegalArgumentException: No serializer found for class io.battlesnake.starter.GameData.CustomGameState and no properties discovered to create BeanSerializer (to avoid exception, disable SerializationFeature.FAIL_ON_EMPTY_BEANS)
-	at io.battlesnake.starter.SnakeTest.moveTest(SnakeTest.java:45)
-Caused by: com.fasterxml.jackson.databind.JsonMappingException: No serializer found for class io.battlesnake.starter.GameData.CustomGameState and no properties discovered to create BeanSerializer (to avoid exception, disable SerializationFeature.FAIL_ON_EMPTY_BEANS)
-	at io.battlesnake.starter.SnakeTest.moveTest(SnakeTest.java:45)
-
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.305 s - in io.battlesnake.starter.SnakeTest

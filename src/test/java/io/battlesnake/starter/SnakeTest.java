@@ -40,10 +40,12 @@ public class SnakeTest {
 
     @Test
     void moveTest() throws IOException {
+		//Errors here may come from other classes, but maven says it's here :(
 		CustomTestCases tester = new CustomTestCases();
 		System.out.println("--Are Test Cases Working?--");
         JsonNode moveRequest = tester.case1();
-        assertEquals("right", handler.move(moveRequest));
+		Map<String, String> response = handler.move(moveRequest);
+        assertEquals(response.get("desiredOutcome"), response.get("move"));
     }
 
     @Test
