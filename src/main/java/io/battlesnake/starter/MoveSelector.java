@@ -119,7 +119,7 @@ public class MoveSelector {
 	private String volumeFormula(ArrayList<Coord> moveOptions){
 		
 		
-		if(self.getHealth() < 50){
+		if(self.getHealth() < 30){
 			return starvingDirection();
 		}
 		return findVolume();
@@ -155,6 +155,8 @@ public class MoveSelector {
 		return calcStarvingDir();
 	}
 	
+	//finds the position of the closest piece of food
+	//returns direction of food
 	private String calcStarvingDir(){
 		int dist = 0;
 		int[] absDist = new int[foodCoords.size()];
@@ -175,7 +177,6 @@ public class MoveSelector {
 	
 	//finds the interger value of the volume in that direction
 	//reterns int, the higher the value the better
-	
 	private int valueOfDirection(Coord direction, int value){
 		
 		ArrayList<Coord> dirToCheck= boardData.getAdjacent(direction.getX(), direction.getY());
@@ -200,6 +201,7 @@ public class MoveSelector {
 		dirToCheck.addAll(newList);
 		
 		for(Coord c : dirToCheck){
+			
 			value++;
 		}
 		
@@ -207,7 +209,8 @@ public class MoveSelector {
 		
 	}
 	
-	
+	//checks the empty spaces where we can move
+	//does not return but chenges the elements in the dirToCheck memory location
 	private void addCheckDir(ArrayList<Coord> dirs, int count){
 		count--;
 		if(count < 1){
@@ -232,6 +235,10 @@ public class MoveSelector {
 				adjDirs.remove(j);
 			}
 			addCheckDir(adjDirs, count);
+			for(Coord o : adjDirs){
+				dirs.add(o);
+			}
+			adjDirs.clear();
 		}
 	}
 	
