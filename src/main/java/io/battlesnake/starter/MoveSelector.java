@@ -144,7 +144,8 @@ public class MoveSelector {
 			return optimalPath;
 		} else {
 //<<<<<<< HEAD
-			return coordToDirection(moveOptions.get(0));
+			//return coordToDirection(moveOptions.get(0));
+			return volumeFormula();
 		}
 		
 	}
@@ -189,7 +190,7 @@ public class MoveSelector {
 	
 	/*Returns a direction to move if there is more than one option*
 	  Returns String - up, down, left, or right*/
-	private String volumeFormula(ArrayList<Coord> moveOptions){
+	private String volumeFormula(){
 		
 		
 		if(self.getHealth() < 30){
