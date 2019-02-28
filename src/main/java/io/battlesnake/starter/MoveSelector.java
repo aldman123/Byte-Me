@@ -18,32 +18,32 @@ public class MoveSelector {
 	private BoardData boardData;
 	private int[][] board;
 	private SnakeData self;
-<<<<<<< HEAD
-	private ArrayList<Coord> moveOptions, scratch, scratch2;
-	private String optimalPath = up;
-=======
+//<<<<<<< HEAD
+	//private ArrayList<Coord> moveOptions, scratch, scratch2;
+	//private String optimalPath = up;
+//=======
 	private ArrayList<Coord> moveOptions, scratch, scratch2, foodCoords, adjDirs;
 	private String optimalPath = up;
 	private ArrayList<Coord> badAdjDirs = new ArrayList<>();
 	
->>>>>>> origin/VolumeFormula
+//>>>>>>> origin/VolumeFormula
 	
 	public String selectMove(JsonNode moveRequest) {
 		String turn = moveRequest.get("turn").asText();
 		this.boardData = new BoardData(moveRequest);
 		board = boardData.getBoard();
 		self = boardData.getSelf();
-<<<<<<< HEAD
-		saveToFile(boardData, "Board_On_Move_" + turn);
-=======
->>>>>>> origin/VolumeFormula
+//<<<<<<< HEAD
+		//saveToFile(boardData, "Board_On_Move_" + turn);
+//=======
+//>>>>>>> origin/VolumeFormula
 		return valueRanking();
 	}
 	
 	private String valueRanking() {
 		int x = self.getHead().getX();
 		int y = self.getHead().getY();
-<<<<<<< HEAD
+//<<<<<<< HEAD
 		System.out.println("Self: {" + x + ", " + y + "}");
 		moveOptions = boardData.getAdjacent(x, y);
 		System.out.println("L1: " + moveOptions.toString());
@@ -53,7 +53,7 @@ public class MoveSelector {
 		
 		//L2	Don't go adjacent to wall or snake
 		System.out.println("L2: " + moveOptions.toString());
-=======
+//=======
 		//System.out.println("Self: {" + x + ", " + y + "}");
 		moveOptions = boardData.getAdjacent(x, y);
 		//System.out.println("L1: " + moveOptions.toString());
@@ -63,7 +63,7 @@ public class MoveSelector {
 		
 		//L2	Don't go adjacent to wall or snake
 		//System.out.println("L2: " + moveOptions.toString());
->>>>>>> origin/VolumeFormula
+//>>>>>>> origin/VolumeFormula
 		scratch = new ArrayList<Coord>();
 		//For each space from L1
 		for (Coord c : moveOptions) {
@@ -85,22 +85,22 @@ public class MoveSelector {
 		}
 		
 		if (isThereOptimalPath(scratch)) {
-<<<<<<< HEAD
+//<<<<<<< HEAD
 			return optimalPath;
-=======
-			return optimalPath; 
->>>>>>> origin/VolumeFormula
+//=======
+			//return optimalPath; 
+//>>>>>>> origin/VolumeFormula
 		} else if (scratch.size() < moveOptions.size()) {
 			moveOptions = (ArrayList<Coord>) scratch.clone();
 		}
 		scratch.clear();
 		
 		//L3	Are we adjacent to any food?
-<<<<<<< HEAD
+//<<<<<<< HEAD
 		System.out.println("L3: " + moveOptions.toString());
-=======
+//=======
 		//System.out.println("L3: " + moveOptions.toString());
->>>>>>> origin/VolumeFormula
+//>>>>>>> origin/VolumeFormula
 		for (Coord c : moveOptions) {
 			if (boardData.get(c) == 1) {
 				scratch.add(c);
@@ -115,11 +115,10 @@ public class MoveSelector {
 		scratch.clear();
 		
 		//L4	Else pick a direction not adjacent to a wall
-<<<<<<< HEAD
+//<<<<<<< HEAD
 		System.out.println("L4: " + moveOptions.toString());
-=======
-		//System.out.println("L4: " + moveOptions.toString());
->>>>>>> origin/VolumeFormula
+//=======
+//>>>>>>> origin/VolumeFormula
 		for (Coord c : moveOptions) {
 			boolean isSafe = true;
 			scratch2 = boardData.getAdjacent(c);
@@ -134,23 +133,23 @@ public class MoveSelector {
 				scratch.add(c);
 			}
 		}
-<<<<<<< HEAD
-=======
+//<<<<<<< HEAD
+//=======
 		
->>>>>>> origin/VolumeFormula
+//>>>>>>> origin/VolumeFormula
 		if (scratch.size() > 0) {
 			moveOptions = (ArrayList<Coord>) scratch.clone();
 		}
 		if (isThereOptimalPath(moveOptions)) {
 			return optimalPath;
 		} else {
-<<<<<<< HEAD
+//<<<<<<< HEAD
 			return coordToDirection(moveOptions.get(0));
 		}
 		
 	}
 	
-	private boolean isThereOptimalPath(ArrayList<Coord> moveOptions) {
+	/*private boolean isThereOptimalPath(ArrayList<Coord> moveOptions) {
 		switch (moveOptions.size()) {
 		case 0:
 			optimalPath = up;
@@ -163,8 +162,8 @@ public class MoveSelector {
 		optimalPath = coordToDirection(moveOptions.get(0));
 		return false;
 		
-	}
-	
+	}*/
+	/*
 	private String coordToDirection(Coord point) {
 		if (point.getX() - self.getHead().getX() < 0) {
 			return left;
@@ -178,19 +177,14 @@ public class MoveSelector {
 			System.out.println('\n' + "CoordToDirection Error" + '\n');
 			return up;
 		}
-	}
+	}*/
 	
 	
 	public void saveToFile(String output, String fileName) {
 		String[] arr = {output};
-		saveToFile(arr, fileName);
-=======
-			return volumeFormula(moveOptions);
-		}
-		
-		
-		
-		
+		//saveToFile(arr, fileName);
+//=======
+		//return volumeFormula(moveOptions);
 	}
 	
 	/*Returns a direction to move if there is more than one option*
@@ -224,7 +218,7 @@ public class MoveSelector {
 		
 		return coordToDirection(moveOptions.get(max));
 		
->>>>>>> origin/VolumeFormula
+//>>>>>>> origin/VolumeFormula
 	}
 	
 	
@@ -255,8 +249,8 @@ public class MoveSelector {
 		return coordToDirection(foodCoords.get(dist));
 	}
 	
-<<<<<<< HEAD
-	private void saveToFile(BoardData boardData, String fileName) {
+//<<<<<<< HEAD
+	/*private void saveToFile(BoardData boardData, String fileName) {
 		PrintWriter file = createSaveFile(fileName);
 		file.println("Current State of Board");
 		int[][] rawBoard = boardData.getBoard();
@@ -264,7 +258,11 @@ public class MoveSelector {
 			String line = "{";
 			for (int i = 0; i < rawBoard.length - 1; i++) {
 				line += rawBoard[i][j] + ", ";
-=======
+			}
+			
+		}
+	}*/
+//=======
 	//finds the interger value of the volume in that direction
 	//reterns int, the higher the value the better
 	private int valueOfDirection(Coord direction, int value){
@@ -281,7 +279,7 @@ public class MoveSelector {
 				if(c.equels(k)){
 					isIn = true;
 				}
->>>>>>> origin/VolumeFormula
+//>>>>>>> origin/VolumeFormula
 			}
 			if(!isIn){
 				newList.add(c);

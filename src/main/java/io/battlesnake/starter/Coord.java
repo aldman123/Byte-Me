@@ -27,8 +27,8 @@ public class Coord{
 	public String toString() {
 		return "{" + x + ", " + y + "}";
 	}
-<<<<<<< HEAD
-=======
+//<<<<<<< HEAD
+//=======
 	
 	public boolean equels(Coord c){
 		if(x == c.getX() && y == c.getY()){
@@ -36,5 +36,5 @@ public class Coord{
 		}
 		return false;
 	}
->>>>>>> origin/VolumeFormula
+//>>>>>>> origin/VolumeFormula
 }
