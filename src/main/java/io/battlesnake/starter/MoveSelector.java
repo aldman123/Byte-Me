@@ -101,7 +101,7 @@ public class MoveSelector {
 //=======
 		//System.out.println("L3: " + moveOptions.toString());
 //>>>>>>> origin/VolumeFormula
-		for (Coord c : moveOptions) {
+		/*for (Coord c : moveOptions) {
 			if (boardData.get(c) == 1) {
 				scratch.add(c);
 			}
@@ -112,7 +112,7 @@ public class MoveSelector {
 		} else if (scratch.size() > 1) {
 			moveOptions = (ArrayList<Coord>) scratch.clone();
 		}
-		scratch.clear();
+		scratch.clear();*/
 		
 		//L4	Else pick a direction not adjacent to a wall
 //<<<<<<< HEAD
