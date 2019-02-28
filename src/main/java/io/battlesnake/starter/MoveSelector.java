@@ -134,7 +134,7 @@ public class MoveSelector {
 	private String volumeFormula(){
 		
 		
-		if(self.getHealth() < 30){
+		if(self.getHealth() < 40){
 			return starvingDirection();
 		}
 		return findVolume();
