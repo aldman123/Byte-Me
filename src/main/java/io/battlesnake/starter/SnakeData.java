@@ -43,9 +43,12 @@ public class SnakeData {
 	
 	public Coord getHead() {
 		return body[0];
+<<<<<<< HEAD
 	}
 	
 	public Coord getTail() {
 		return body[body.length - 1];
+=======
+>>>>>>> origin/VolumeFormula
 	}
 }

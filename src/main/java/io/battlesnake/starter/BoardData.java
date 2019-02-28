@@ -120,6 +120,7 @@ import java.util.ArrayList;
 		return getAdjacent(c.getX(), c.getY());
 	}
 	
+<<<<<<< HEAD
 	protected ArrayList<Coord> getAdjacent(int x, int y) {
 		ArrayList<Coord> scratch = new ArrayList<Coord>();
 		if (get(x-1,y) < SNAKE_BODY) {
@@ -132,6 +133,24 @@ import java.util.ArrayList;
 			scratch.add(new Coord(x, y-1));
 		}
 		if (get(x,y+1) < SNAKE_BODY) {
+=======
+	protected Coord[] getFood(){
+		return food;
+	}
+	
+	protected ArrayList<Coord> getAdjacent(int x, int y) {
+		ArrayList<Coord> scratch = new ArrayList<Coord>();
+		if (get(x-1,y) < 4) {
+			scratch.add(new Coord(x-1,y));
+		}
+		if (get(x+1,y) < 4) {
+			scratch.add(new Coord(x+1,y));
+		}
+		if (get(x,y-1) < 4) {
+			scratch.add(new Coord(x, y-1));
+		}
+		if (get(x,y+1) < 4) {
+>>>>>>> origin/VolumeFormula
 			scratch.add(new Coord(x, y+1));
 		}
 		return scratch;
