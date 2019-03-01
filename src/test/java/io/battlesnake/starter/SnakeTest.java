@@ -42,8 +42,15 @@ public class SnakeTest {
     void moveTest() throws IOException {
 		//Errors here may come from other classes, but maven says it's here :(
 		CustomTestCases tester = new CustomTestCases();
-		System.out.println("--Are Test Cases Working?--");
-        JsonNode moveRequest = tester.case1();
+        JsonNode moveRequest = tester.testBasicDesicions();
+		Map<String, String> response = handler.move(moveRequest);
+        assertEquals(response.get("desiredOutcome"), response.get("move"));
+    }
+	
+	@Test
+    void linkedListGenerationTest() throws IOException {
+		CustomTestCases tester = new CustomTestCases();
+        JsonNode moveRequest = tester.test2DLinkedList();
 		Map<String, String> response = handler.move(moveRequest);
         assertEquals(response.get("desiredOutcome"), response.get("move"));
     }
