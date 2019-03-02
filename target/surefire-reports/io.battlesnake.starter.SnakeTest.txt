@@ -1,16 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: io.battlesnake.starter.SnakeTest
 -------------------------------------------------------------------------------
-<<<<<<< HEAD
-Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.305 s - in io.battlesnake.starter.SnakeTest
-=======
-Tests run: 4, Failures: 1, Errors: 1, Skipped: 0, Time elapsed: 0.158 s <<< FAILURE! - in io.battlesnake.starter.SnakeTest
-startTest  Time elapsed: 0.031 s  <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: <#ff00ff> but was: <#767E85>
-	at io.battlesnake.starter.SnakeTest.startTest(SnakeTest.java:38)
+Tests run: 4, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.189 s <<< FAILURE! - in io.battlesnake.starter.SnakeTest
+moveTest  Time elapsed: 0.022 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <down> but was: <left>
+	at io.battlesnake.starter.SnakeTest.moveTest(SnakeTest.java:48)
 
-moveTest  Time elapsed: 0.016 s  <<< ERROR!
-java.lang.NullPointerException
-	at io.battlesnake.starter.SnakeTest.moveTest(SnakeTest.java:44)
-
->>>>>>> origin/VolumeFormula

@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 package io.battlesnake.starter;
 public class Node {
 	protected Node up, down, left, right;
+=======
+public class Node {
+	/*protected Node up, down, left, right;
+>>>>>>> tryFoodOptions
 	int type, x, y, distanceFromOrigin;
 	public Node(int x, int y, int type) {
 		this.type = type;
@@ -14,8 +19,12 @@ public class Node {
 	}
 	
 	public Node[] getNeighbors() {
+<<<<<<< HEAD
 		Node[] output = {up, down, left, right};
 		return output;
+=======
+		return {up, down, left, right};
+>>>>>>> tryFoodOptions
 	}
 	
 	public void setDistance(int d) {
@@ -52,6 +61,10 @@ public class Node {
 	protected void linkLeft(Node node) {
 		this.left = node;
 		node.right = this;
+<<<<<<< HEAD
 	}
+=======
+	}*/
+>>>>>>> tryFoodOptions
 	
 }

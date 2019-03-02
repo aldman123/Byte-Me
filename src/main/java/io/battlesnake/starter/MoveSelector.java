@@ -14,28 +14,43 @@ public class MoveSelector {
 	private final String left = "left";
 	private final String right = "right";
 
-	private File file;
 	private BoardData boardData;
 	private int[][] board;
 	private SnakeData self;
+<<<<<<< HEAD
+=======
+	int hungerThreshhold = 90;
+>>>>>>> tryFoodOptions
 
 	private ArrayList<Coord> moveOptions, scratch, scratch2, foodCoords, adjDirs;
 	private String optimalPath = up;
 	private ArrayList<Coord> badAdjDirs = new ArrayList<>();
+<<<<<<< HEAD
 
+=======
+	private int boardWidth;
+>>>>>>> tryFoodOptions
 	
 	public String selectMove(JsonNode moveRequest) {
 		String turn = moveRequest.get("turn").asText();
 		this.boardData = new BoardData(moveRequest);
 		board = boardData.getBoard();
 		self = boardData.getSelf();
+<<<<<<< HEAD
 
+=======
+>>>>>>> tryFoodOptions
 		return valueRanking();
 	}
 	
 	private String valueRanking() {
 		int x = self.getHead().getX();
 		int y = self.getHead().getY();
+<<<<<<< HEAD
+=======
+		boardWidth = board.length;
+
+>>>>>>> tryFoodOptions
 		System.out.println("Self: {" + x + ", " + y + "}");
 		moveOptions = boardData.getAdjacent(x, y);
 		System.out.println("L1: " + moveOptions.toString());
@@ -43,8 +58,17 @@ public class MoveSelector {
 			return optimalPath;
 		}
 		
+		if(self.getSize() > boardWidth*2){
+			hungerThreshhold = 30;
+		}
+		
 		//L2	Don't go adjacent to wall or snake
+<<<<<<< HEAD
 		System.out.println("L2: " + moveOptions.toString());
+=======
+		//System.out.println("L2: " + moveOptions.toString());
+		//System.out.println("Self: {" + x + ", " + y + "}");
+>>>>>>> tryFoodOptions
 		moveOptions = boardData.getAdjacent(x, y);
 		//System.out.println("L1: " + moveOptions.toString());
 		if (isThereOptimalPath(moveOptions)) {
@@ -52,6 +76,10 @@ public class MoveSelector {
 		}
 		
 		//L2	Don't go adjacent to wall or snake
+<<<<<<< HEAD
+=======
+		//System.out.println("L2: " + moveOptions.toString());
+>>>>>>> tryFoodOptions
 		scratch = new ArrayList<Coord>();
 		//For each space from L1
 		for (Coord c : moveOptions) {
@@ -80,7 +108,12 @@ public class MoveSelector {
 		scratch.clear();
 		
 		//L3	Are we adjacent to any food?
+<<<<<<< HEAD
 		System.out.println("L3: " + moveOptions.toString());
+=======
+		//System.out.println("L3: " + moveOptions.toString());
+		//System.out.println("L3: " + moveOptions.toString());
+>>>>>>> tryFoodOptions
 		for (Coord c : moveOptions) {
 			if (boardData.get(c) == 1) {
 				scratch.add(c);
@@ -116,11 +149,16 @@ public class MoveSelector {
 		if (isThereOptimalPath(moveOptions)) {
 			return optimalPath;
 		} else {
+<<<<<<< HEAD
 			return volumeFormula(moveOptions);
+=======
+			return volumeFormula();
+>>>>>>> tryFoodOptions
 		}
 		
 	}
 	
+<<<<<<< HEAD
 	public void saveToFile(String output, String fileName) {
 		String[] arr = {output};
 	}
@@ -130,6 +168,13 @@ public class MoveSelector {
 	private String volumeFormula(ArrayList<Coord> moveOptions){
 		
 		if(self.getHealth() < 30){
+=======
+	/*Returns a direction to move if there is more than one option*
+	  Returns String - up, down, left, or right*/
+	private String volumeFormula(){
+		
+		if(self.getHealth() < hungerThreshhold){
+>>>>>>> tryFoodOptions
 			return starvingDirection();
 		} else if (self.getSize() > board.length * 2) {
 			return squeeze(moveOptions);
@@ -254,10 +299,10 @@ public class MoveSelector {
 	private int valueOfDirection(Coord direction, int value){
 		
 		ArrayList<Coord> dirToCheck= boardData.getAdjacent(direction.getX(), direction.getY());
-		addCheckDir(dirToCheck, 4);
+		addCheckDir(dirToCheck, 4 );
 		
 		ArrayList<Coord> newList = new ArrayList<>();
-		newList.add(dirToCheck.get(1));
+		newList.add(dirToCheck.get(0));
 		boolean isIn;
 		for(Coord c : dirToCheck){
 			isIn = false;
@@ -265,7 +310,10 @@ public class MoveSelector {
 				if(c.equels(k)){
 					isIn = true;
 				}
+<<<<<<< HEAD
 
+=======
+>>>>>>> tryFoodOptions
 			}
 			if(!isIn){
 				newList.add(c);
@@ -300,7 +348,7 @@ public class MoveSelector {
 		for(Coord c : tempDirs){
 			adjDirs = boardData.getAdjacent(c.getX(), c.getY());
 			for(Coord k : adjDirs){
-				if(boardData.get(k) < 2 && !dirs.contains(k)){
+				if((boardData.get(k) < 2 || boardData.get(k) == 4)&& !dirs.contains(k)){
 					dirs.add(k);
 				} else {
 					badAdjDirs.add(k);
@@ -339,28 +387,27 @@ public class MoveSelector {
 		
 		if (point.getX() - self.getHead().getX() < 0)  {
 			tempCoord = new Coord(headX - 1, headY);
-			if(boardData.get(tempCoord) < 2){
-				
+			if(boardData.get(tempCoord) < 2 || boardData.get(tempCoord) == 4){
 				return left;
 			}
 		}
 		if (point.getX() - self.getHead().getX() > 0) {
 			tempCoord = new Coord(headX + 1, headY);
-			if(boardData.get(tempCoord) < 2){
+			if(boardData.get(tempCoord) < 2 || boardData.get(tempCoord) == 4){
 				
 				return right;
 			}
 		} 
 		if (point.getY() - self.getHead().getY() < 0) {
 			tempCoord = new Coord(headX, headY - 1);
-			if(boardData.get(tempCoord) < 2){
+			if(boardData.get(tempCoord) < 2 || boardData.get(tempCoord) == 4){
 				
 				return up;
 			}
 		}
 		if (point.getY() - self.getHead().getY() > 0) {
 			tempCoord = new Coord(headX, headY + 1);
-			if(boardData.get(tempCoord) < 2){
+			if(boardData.get(tempCoord) < 2 || boardData.get(tempCoord) == 4){
 				
 				return down;
 			}
