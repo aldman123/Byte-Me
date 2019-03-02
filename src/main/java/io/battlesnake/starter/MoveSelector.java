@@ -116,7 +116,7 @@ public class MoveSelector {
 		if (isThereOptimalPath(moveOptions)) {
 			return optimalPath;
 		} else {
-			return volumeFormula();
+			return volumeFormula(moveOptions);
 		}
 		
 	}
@@ -127,19 +127,84 @@ public class MoveSelector {
 	
 	/*Returns a direction to move if there is more than one option*
 	  Returns String - up, down, left, or right*/
-	private String volumeFormula(){
+	private String volumeFormula(ArrayList<Coord> moveOptions){
 		
 		if(self.getHealth() < 30){
 			return starvingDirection();
+		} else if (self.getSize() > board.length * 2) {
+			return squeeze(moveOptions);
+		} else {
+			return findVolume();
 		}
-		return findVolume();
+	}
+	
+	/*
+	 * This method has the snake going left to right and slowly squeezing everyone above us
+	 */
+	private final int minHunger = 40;
+	
+	private String squeeze(ArrayList<Coord> moveOptions) {
+		String[] availableDirections = new String[moveOptions.size()];
+		for (int i = 0; i < moveOptions.size(); i++) {
+			availableDirections[i] = coordToDirection(moveOptions.get(i));
+		}
+		
+		//Get all the snakes above us
+		boolean canGoDown = false;
+		
+		for (String s : availableDirections) {
+			if (s.equals(down)) {
+				canGoDown = true;
+			}
+		}
+		if (!canGoDown) {
+			return findVolume();
+		}
+		SnakeData[] snakes = boardData.getSnakes();
+		int lowestSnakeY = 0;
+		for (int i = 1; i < snakes.length; i++) {
+			for (Coord c : snakes[i].getBody()) {
+				if (c.getY() > lowestSnakeY) {
+					lowestSnakeY = c.getY();
+				}
+			}
+		}
+		
+		if (self.getHead().getY() <= lowestSnakeY) {
+			return down;
+		}
+		
+		//Are we not hungry? Then avoid food
+		boolean avoidFood = !(self.getHealth() > minHunger);
+		
+		//Have we run out of space above us? Then don't go up
+		boolean canGoUp = true; //Temp
+		
+		//Else move left, up, right, down in that order of priority
+		String optimalPath = availableDirections[0];
+		int bestChoiceValue = 0;
+		for (String s : availableDirections) {
+			if (s.equals(left)) {
+				return left;
+			} else if (!optimalPath.equals(right) && s.equals(right)) {
+				optimalPath = right;
+			} else if (optimalPath.equals(down) && s.equals(up)) {
+				optimalPath = up;
+			}
+		}
+		
+		return optimalPath;
+		
 	}
 	
 	
 	
 	//finds the direction with the most open areas for movement
 	//returns String direction
-	private String findVolume(){
+	private String findVolume() {
+		if (moveOptions.size() < 1) {
+			return left;
+		}
 		int[] directions = new int[moveOptions.size()];
 		int max = 0;
 			
