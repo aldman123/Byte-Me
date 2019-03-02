@@ -56,10 +56,10 @@ public class MoveSelector {
 		if (isThereOptimalPath(moveOptions)) {
 			return optimalPath;
 		}
-
+		scratch = new ArrayList<Coord>();
+		/*
 		//L2	Don't go adjacent to wall or snake
 		//System.out.println("L2: " + moveOptions.toString());
-		scratch = new ArrayList<Coord>();
 		//For each space from L1
 		for (Coord c : moveOptions) {
 			boolean isSafe = true;
@@ -101,7 +101,7 @@ public class MoveSelector {
 			moveOptions = (ArrayList<Coord>) scratch.clone();
 		}
 		scratch.clear();
-
+		*/
 		//L4	Else pick a direction not adjacent to a wall
 		System.out.println("L4: " + moveOptions.toString());
 		for (Coord c : moveOptions) {
@@ -137,10 +137,10 @@ public class MoveSelector {
 	  Returns String - up, down, left, or right*/
 	private String volumeFormula(ArrayList<Coord> moveOptions){
 
-		if(self.getHealth() < hungerThreshhold){
-			return starvingDirection();
-		} else if (self.getSize() > board.length * 2) {
+		if (self.getSize() > board.length * 2) {
 			return squeeze(moveOptions);
+		} else if(self.getHealth() < hungerThreshhold){
+			return starvingDirection();
 		} else {
 			return findVolume();
 		}
