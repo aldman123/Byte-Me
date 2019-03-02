@@ -3,8 +3,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.io.PrintWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.*;
 import java.lang.Math;
+
+import java.util.LinkedList;
+import java.util.Arrays;
 
 import java.util.ArrayList;
 
@@ -17,7 +19,7 @@ public class MoveSelector {
 	private BoardData boardData;
 	private int[][] board;
 	private SnakeData self;
-	int hungerThreshhold = 90;
+	int hungerThreshhold = 95;
 
 	private ArrayList<Coord> moveOptions, scratch, scratch2, foodCoords, adjDirs;
 	private String optimalPath = up;
@@ -57,51 +59,7 @@ public class MoveSelector {
 			return optimalPath;
 		}
 		scratch = new ArrayList<Coord>();
-		/*
-		//L2	Don't go adjacent to wall or snake
-		//System.out.println("L2: " + moveOptions.toString());
-		//For each space from L1
-		for (Coord c : moveOptions) {
-			boolean isSafe = true;
-			scratch2 = boardData.getAdjacent(c);
-			//For each space adjacent to the direction being considered
-			for (Coord c2 : scratch2) {
-				//If the space 2 turns away from us is a bad snake
-				if (boardData.get(c2) == 3) {
-					//If the snake is our size or larger, it can kill us
-					if (boardData.getSnake(c2).getSize() > self.getSize()) {
-						isSafe = false;
-					}
-				}
-			}
-			if (isSafe) {
-				scratch.add(c);
-			}
-		}
 
-		if (isThereOptimalPath(scratch)) {
-			return optimalPath;
-		} else if (scratch.size() < moveOptions.size()) {
-			moveOptions = (ArrayList<Coord>) scratch.clone();
-		}
-		scratch.clear();
-
-		//L3	Are we adjacent to any food?
-		//System.out.println("L3: " + moveOptions.toString());
-		//System.out.println("L3: " + moveOptions.toString());
-		for (Coord c : moveOptions) {
-			if (boardData.get(c) == 1) {
-				scratch.add(c);
-			}
-		}
-
-		if (isThereOptimalPath(scratch)) {
-			return optimalPath;
-		} else if (scratch.size() > 1) {
-			moveOptions = (ArrayList<Coord>) scratch.clone();
-		}
-		scratch.clear();
-		*/
 		//L4	Else pick a direction not adjacent to a wall
 		System.out.println("L4: " + moveOptions.toString());
 		for (Coord c : moveOptions) {
@@ -139,10 +97,8 @@ public class MoveSelector {
 
 		if (self.getSize() > board.length * 2) {
 			return squeeze(moveOptions);
-		} else if(self.getHealth() < hungerThreshhold){
-			return starvingDirection();
 		} else {
-			return findVolume();
+			return starvingDirection();
 		}
 	}
 
@@ -232,7 +188,7 @@ public class MoveSelector {
 
 	//returns direction to closest food
 	//returns String up, down, left, or right
-	private String starvingDirection(){
+	private String starvingDirection() {
 		foodCoords = new ArrayList<Coord>(Arrays.asList(boardData.getFood()));
 		return calcStarvingDir();
 	}
@@ -260,9 +216,16 @@ public class MoveSelector {
 	//finds the interger value of the volume in that direction
 	//reterns int, the higher the value the better
 	private int valueOfDirection(Coord direction, int value){
-
+		ArrayList<Coord> temp = new ArrayList<>();
 		ArrayList<Coord> dirToCheck= boardData.getAdjacent(direction.getX(), direction.getY());
-		addCheckDir(dirToCheck, 4 );
+		for(Coord c : dirToCheck){
+			if((boardData.get(c) < 2 || boardData.get(c) == 4)){
+				temp.add(c);
+			}
+		}
+		dirToCheck = temp;
+		visited = new LinkedList<Coord>();
+		addCheckDir(dirToCheck, 6);
 
 		ArrayList<Coord> newList = new ArrayList<>();
 		newList.add(dirToCheck.get(0));
@@ -293,6 +256,8 @@ public class MoveSelector {
 
 	//checks the empty spaces where we can move
 	//does not return but chenges the elements in the dirToCheck memory location
+	private LinkedList<Coord> visited;
+
 	private void addCheckDir(ArrayList<Coord> dirs, int count){
 		count--;
 		if(count < 1){
@@ -305,9 +270,10 @@ public class MoveSelector {
 		ArrayList<Coord> tempDirs = (ArrayList<Coord>)dirs.clone();
 
 		for(Coord c : tempDirs){
+			visited.add(c);
 			adjDirs = boardData.getAdjacent(c.getX(), c.getY());
 			for(Coord k : adjDirs){
-				if((boardData.get(k) < 2 || boardData.get(k) == 4)&& !dirs.contains(k)){
+				if((boardData.get(k) < 2 || boardData.get(k) == 4) && !dirs.contains(k)){
 					dirs.add(k);
 				} else {
 					badAdjDirs.add(k);
@@ -376,11 +342,7 @@ public class MoveSelector {
 		if(foodCoords.size() > 0){
 			return calcStarvingDir();
 		}
-		try{
-			return coordToDirection(moveOptions.get(0));
-		} catch (IndexOutOfBoundsException e){
-			return up;
-		}
+		return findVolume();
 	}
 
 
