@@ -25,7 +25,7 @@ public class Snake {
     private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
     private static final Handler HANDLER = new Handler();
     private static final Logger LOG = LoggerFactory.getLogger(Snake.class);
-	
+
 	private static MoveSelector moveDecider;
 	private static long minDeltaTime, maxDeltaTime;
 
@@ -46,7 +46,7 @@ public class Snake {
             port = "8080";
         }
         port(Integer.parseInt(port));
-        get("/", (req, res) -> "Battlesnake documentation can be found at " + 
+        get("/", (req, res) -> "Battlesnake documentation can be found at " +
             "<a href=\"https://docs.battlesnake.io\">https://docs.battlesnake.io</a>.");
         post("/start", HANDLER::process, JSON_MAPPER::writeValueAsString);
         post("/ping", HANDLER::process, JSON_MAPPER::writeValueAsString);
@@ -72,7 +72,6 @@ public class Snake {
          * @return
          */
         public Map<String, String> process(Request req, Response res) {
-			System.out.println('\n' + "Recieved request!" + '\n');
 			long startTime = System.currentTimeMillis();
             try {
                 JsonNode parsedRequest = JSON_MAPPER.readTree(req.body());
@@ -143,7 +142,7 @@ public class Snake {
 				moveDecider = new MoveSelector();
 			}
 			response.put("move", moveDecider.selectMove(moveRequest));
-			
+
 			//For test cases only
 			if (moveRequest.get("desiredOutcome") != null) {
 				response.put("desiredOutcome", moveRequest.get("desiredOutcome").asText());

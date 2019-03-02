@@ -38,10 +38,7 @@ public class MoveSelector {
 		int x = self.getHead().getX();
 		int y = self.getHead().getY();
 		boardWidth = board.length;
-
-		System.out.println("Self: {" + x + ", " + y + "}");
 		moveOptions = boardData.getAdjacent(x, y);
-		System.out.println("L1: " + moveOptions.toString());
 		if (isThereOptimalPath(moveOptions)) {
 			return optimalPath;
 		}
@@ -51,17 +48,13 @@ public class MoveSelector {
 		}
 
 		//L2	Don't go adjacent to wall or snake
-		//System.out.println("L2: " + moveOptions.toString());
-		//System.out.println("Self: {" + x + ", " + y + "}");
 		moveOptions = boardData.getAdjacent(x, y);
-		//System.out.println("L1: " + moveOptions.toString());
 		if (isThereOptimalPath(moveOptions)) {
 			return optimalPath;
 		}
 		scratch = new ArrayList<Coord>();
 
 		//L4	Else pick a direction not adjacent to a wall
-		System.out.println("L4: " + moveOptions.toString());
 		for (Coord c : moveOptions) {
 			boolean isSafe = true;
 			scratch2 = boardData.getAdjacent(c);
@@ -303,7 +296,6 @@ public class MoveSelector {
 			return false;
 		case 1:
 			optimalPath = coordToDirection(moveOptions.get(0));
-			//System.out.println("Optimal Path Found: " + optimalPath + ", " + moveOptions.get(0));
 			return true;
 		}
 		optimalPath = coordToDirection(moveOptions.get(0));
