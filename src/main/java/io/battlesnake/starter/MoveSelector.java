@@ -225,7 +225,7 @@ public class MoveSelector {
 		}
 		dirToCheck = temp;
 		visited = new LinkedList<Coord>();
-		addCheckDir(dirToCheck, 6);
+		addCheckDir(dirToCheck, 4);
 
 		ArrayList<Coord> newList = new ArrayList<>();
 		newList.add(dirToCheck.get(0));
