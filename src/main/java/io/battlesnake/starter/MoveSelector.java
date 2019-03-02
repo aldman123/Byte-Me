@@ -17,69 +17,48 @@ public class MoveSelector {
 	private BoardData boardData;
 	private int[][] board;
 	private SnakeData self;
-<<<<<<< HEAD
-=======
 	int hungerThreshhold = 90;
->>>>>>> tryFoodOptions
 
 	private ArrayList<Coord> moveOptions, scratch, scratch2, foodCoords, adjDirs;
 	private String optimalPath = up;
 	private ArrayList<Coord> badAdjDirs = new ArrayList<>();
-<<<<<<< HEAD
-
-=======
 	private int boardWidth;
->>>>>>> tryFoodOptions
-	
+
 	public String selectMove(JsonNode moveRequest) {
 		String turn = moveRequest.get("turn").asText();
 		this.boardData = new BoardData(moveRequest);
 		board = boardData.getBoard();
 		self = boardData.getSelf();
-<<<<<<< HEAD
-
-=======
->>>>>>> tryFoodOptions
 		return valueRanking();
 	}
-	
+
 	private String valueRanking() {
 		int x = self.getHead().getX();
 		int y = self.getHead().getY();
-<<<<<<< HEAD
-=======
 		boardWidth = board.length;
 
->>>>>>> tryFoodOptions
 		System.out.println("Self: {" + x + ", " + y + "}");
 		moveOptions = boardData.getAdjacent(x, y);
 		System.out.println("L1: " + moveOptions.toString());
 		if (isThereOptimalPath(moveOptions)) {
 			return optimalPath;
 		}
-		
+
 		if(self.getSize() > boardWidth*2){
 			hungerThreshhold = 30;
 		}
-		
+
 		//L2	Don't go adjacent to wall or snake
-<<<<<<< HEAD
-		System.out.println("L2: " + moveOptions.toString());
-=======
 		//System.out.println("L2: " + moveOptions.toString());
 		//System.out.println("Self: {" + x + ", " + y + "}");
->>>>>>> tryFoodOptions
 		moveOptions = boardData.getAdjacent(x, y);
 		//System.out.println("L1: " + moveOptions.toString());
 		if (isThereOptimalPath(moveOptions)) {
-			return optimalPath; 
+			return optimalPath;
 		}
-		
+
 		//L2	Don't go adjacent to wall or snake
-<<<<<<< HEAD
-=======
 		//System.out.println("L2: " + moveOptions.toString());
->>>>>>> tryFoodOptions
 		scratch = new ArrayList<Coord>();
 		//For each space from L1
 		for (Coord c : moveOptions) {
@@ -99,34 +78,30 @@ public class MoveSelector {
 				scratch.add(c);
 			}
 		}
-		
+
 		if (isThereOptimalPath(scratch)) {
 			return optimalPath;
 		} else if (scratch.size() < moveOptions.size()) {
 			moveOptions = (ArrayList<Coord>) scratch.clone();
 		}
 		scratch.clear();
-		
+
 		//L3	Are we adjacent to any food?
-<<<<<<< HEAD
-		System.out.println("L3: " + moveOptions.toString());
-=======
 		//System.out.println("L3: " + moveOptions.toString());
 		//System.out.println("L3: " + moveOptions.toString());
->>>>>>> tryFoodOptions
 		for (Coord c : moveOptions) {
 			if (boardData.get(c) == 1) {
 				scratch.add(c);
 			}
 		}
-		
+
 		if (isThereOptimalPath(scratch)) {
 			return optimalPath;
 		} else if (scratch.size() > 1) {
 			moveOptions = (ArrayList<Coord>) scratch.clone();
 		}
 		scratch.clear();
-		
+
 		//L4	Else pick a direction not adjacent to a wall
 		System.out.println("L4: " + moveOptions.toString());
 		for (Coord c : moveOptions) {
@@ -149,32 +124,20 @@ public class MoveSelector {
 		if (isThereOptimalPath(moveOptions)) {
 			return optimalPath;
 		} else {
-<<<<<<< HEAD
 			return volumeFormula(moveOptions);
-=======
-			return volumeFormula();
->>>>>>> tryFoodOptions
 		}
-		
+
 	}
-	
-<<<<<<< HEAD
+
 	public void saveToFile(String output, String fileName) {
 		String[] arr = {output};
 	}
-	
+
 	/*Returns a direction to move if there is more than one option*
 	  Returns String - up, down, left, or right*/
 	private String volumeFormula(ArrayList<Coord> moveOptions){
-		
-		if(self.getHealth() < 30){
-=======
-	/*Returns a direction to move if there is more than one option*
-	  Returns String - up, down, left, or right*/
-	private String volumeFormula(){
-		
+
 		if(self.getHealth() < hungerThreshhold){
->>>>>>> tryFoodOptions
 			return starvingDirection();
 		} else if (self.getSize() > board.length * 2) {
 			return squeeze(moveOptions);
@@ -182,21 +145,21 @@ public class MoveSelector {
 			return findVolume();
 		}
 	}
-	
+
 	/*
 	 * This method has the snake going left to right and slowly squeezing everyone above us
 	 */
 	private final int minHunger = 40;
-	
+
 	private String squeeze(ArrayList<Coord> moveOptions) {
 		String[] availableDirections = new String[moveOptions.size()];
 		for (int i = 0; i < moveOptions.size(); i++) {
 			availableDirections[i] = coordToDirection(moveOptions.get(i));
 		}
-		
+
 		//Get all the snakes above us
 		boolean canGoDown = false;
-		
+
 		for (String s : availableDirections) {
 			if (s.equals(down)) {
 				canGoDown = true;
@@ -214,17 +177,17 @@ public class MoveSelector {
 				}
 			}
 		}
-		
+
 		if (self.getHead().getY() <= lowestSnakeY) {
 			return down;
 		}
-		
+
 		//Are we not hungry? Then avoid food
 		boolean avoidFood = !(self.getHealth() > minHunger);
-		
+
 		//Have we run out of space above us? Then don't go up
 		boolean canGoUp = true; //Temp
-		
+
 		//Else move left, up, right, down in that order of priority
 		String optimalPath = availableDirections[0];
 		int bestChoiceValue = 0;
@@ -237,13 +200,13 @@ public class MoveSelector {
 				optimalPath = up;
 			}
 		}
-		
+
 		return optimalPath;
-		
+
 	}
-	
-	
-	
+
+
+
 	//finds the direction with the most open areas for movement
 	//returns String direction
 	private String findVolume() {
@@ -252,28 +215,28 @@ public class MoveSelector {
 		}
 		int[] directions = new int[moveOptions.size()];
 		int max = 0;
-			
+
 		for(int i = 0; i < directions.length; i++){
 			directions[i] = valueOfDirection(moveOptions.get(i), 0);
 		}
-		
+
 		for(int i = 0; i < directions.length; i++){
 			if(directions[max] < directions[i]){
 				max = i;
 			}
 		}
-		
+
 		return coordToDirection(moveOptions.get(max));
 	}
-	
-	
+
+
 	//returns direction to closest food
 	//returns String up, down, left, or right
 	private String starvingDirection(){
 		foodCoords = new ArrayList<Coord>(Arrays.asList(boardData.getFood()));
 		return calcStarvingDir();
 	}
-	
+
 	//finds the position of the closest piece of food
 	//returns direction of food
 	private String calcStarvingDir(){
@@ -284,23 +247,23 @@ public class MoveSelector {
 			num = (Math.abs(self.getHead().getX() - foodCoords.get(i).getX()) + Math.abs(self.getHead().getY() - foodCoords.get(i).getY()));
 			absDist[i] = num;
 		}
-		
+
 		for(int i = 0; i < absDist.length; i++){
 			if(absDist[dist] > absDist[i]){
 				dist = i;
 			}
 		}
-		
+
 		return coordToDirection(foodCoords.get(dist));
 	}
-	
+
 	//finds the interger value of the volume in that direction
 	//reterns int, the higher the value the better
 	private int valueOfDirection(Coord direction, int value){
-		
+
 		ArrayList<Coord> dirToCheck= boardData.getAdjacent(direction.getX(), direction.getY());
 		addCheckDir(dirToCheck, 4 );
-		
+
 		ArrayList<Coord> newList = new ArrayList<>();
 		newList.add(dirToCheck.get(0));
 		boolean isIn;
@@ -310,28 +273,24 @@ public class MoveSelector {
 				if(c.equels(k)){
 					isIn = true;
 				}
-<<<<<<< HEAD
-
-=======
->>>>>>> tryFoodOptions
 			}
 			if(!isIn){
 				newList.add(c);
 			}
 		}
-		
+
 		dirToCheck.clear();
 		dirToCheck.addAll(newList);
-		
+
 		for(Coord c : dirToCheck){
-			
+
 			value++;
 		}
-		
+
 		return value;
-		
+
 	}
-	
+
 	//checks the empty spaces where we can move
 	//does not return but chenges the elements in the dirToCheck memory location
 	private void addCheckDir(ArrayList<Coord> dirs, int count){
@@ -342,9 +301,9 @@ public class MoveSelector {
 		if(dirs.size() < 1){
 			return;
 		}
-		
+
 		ArrayList<Coord> tempDirs = (ArrayList<Coord>)dirs.clone();
-		
+
 		for(Coord c : tempDirs){
 			adjDirs = boardData.getAdjacent(c.getX(), c.getY());
 			for(Coord k : adjDirs){
@@ -364,7 +323,7 @@ public class MoveSelector {
 			adjDirs.clear();
 		}
 	}
-	
+
 	private boolean isThereOptimalPath(ArrayList<Coord> moveOptions) {
 		switch (moveOptions.size()) {
 		case 0:
@@ -377,14 +336,14 @@ public class MoveSelector {
 		}
 		optimalPath = coordToDirection(moveOptions.get(0));
 		return false;
-		
+
 	}
-	
+
 	private String coordToDirection(Coord point) {
 		int headY = self.getHead().getY();
 		int headX = self.getHead().getX();
 		Coord tempCoord;
-		
+
 		if (point.getX() - self.getHead().getX() < 0)  {
 			tempCoord = new Coord(headX - 1, headY);
 			if(boardData.get(tempCoord) < 2 || boardData.get(tempCoord) == 4){
@@ -394,25 +353,25 @@ public class MoveSelector {
 		if (point.getX() - self.getHead().getX() > 0) {
 			tempCoord = new Coord(headX + 1, headY);
 			if(boardData.get(tempCoord) < 2 || boardData.get(tempCoord) == 4){
-				
+
 				return right;
 			}
-		} 
+		}
 		if (point.getY() - self.getHead().getY() < 0) {
 			tempCoord = new Coord(headX, headY - 1);
 			if(boardData.get(tempCoord) < 2 || boardData.get(tempCoord) == 4){
-				
+
 				return up;
 			}
 		}
 		if (point.getY() - self.getHead().getY() > 0) {
 			tempCoord = new Coord(headX, headY + 1);
 			if(boardData.get(tempCoord) < 2 || boardData.get(tempCoord) == 4){
-				
+
 				return down;
 			}
 		}
-		
+
 		foodCoords.remove(point);
 		if(foodCoords.size() > 0){
 			return calcStarvingDir();
@@ -423,7 +382,7 @@ public class MoveSelector {
 			return up;
 		}
 	}
-	
-	
-		
+
+
+
 }
