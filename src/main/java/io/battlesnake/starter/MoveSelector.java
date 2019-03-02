@@ -148,10 +148,16 @@ public class MoveSelector {
 		String optimalPath = availableDirections[0];
 		int bestChoiceValue = 0;
 		for (String s : availableDirections) {
-			if (s.equals(left)) {
-				return left;
-			} else if (!optimalPath.equals(right) && s.equals(right)) {
-				optimalPath = right;
+			if (s.equals(right) || s.equals(left)) {
+				if ((optimalPath.equals(left) && s.equals(right)) || (optimalPath.equals(right) && s.equals(left))) {
+					if (Math.random() > 0.5) {
+						return left;
+					} else {
+						return right;
+					}
+				} else {
+					optimalPath = s;
+				}
 			} else if (optimalPath.equals(down) && s.equals(up)) {
 				optimalPath = up;
 			}
