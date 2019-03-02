@@ -16,7 +16,7 @@ public class CustomTestCases {
 	}
 	
 	
-	public JsonNode case1() {
+	public JsonNode testBasicDesicions() {
 		ObjectNode gameState = mapper.createObjectNode();
 		
 		ObjectNode game = mapper.createObjectNode();
