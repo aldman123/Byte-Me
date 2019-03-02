@@ -225,7 +225,7 @@ public class MoveSelector {
 		ArrayList<Coord> dirToCheck= boardData.getAdjacent(direction.getX(), direction.getY());
 		
 		visited = new LinkedList<Coord>();
-		addCheckDir(dirToCheck, 4);
+		addCheckDir(dirToCheck, 3);
 
 		ArrayList<Coord> newList = new ArrayList<>();
 		newList.add(dirToCheck.get(0));
@@ -267,25 +267,44 @@ public class MoveSelector {
 		}
 
 		ArrayList<Coord> tempDirs = (ArrayList<Coord>)dirs.clone();
-
 		for(Coord c : tempDirs){
-			visited.add(c);
-			adjDirs = boardData.getAdjacent(c.getX(), c.getY());
-			for(Coord k : adjDirs){
-				if((boardData.get(k) < 2 || boardData.get(k) == 4) && !dirs.contains(k)){
-					dirs.add(k);
-				} else {
-					badAdjDirs.add(k);
+			boolean alreadyVisited = false;
+			for (Coord a : visited) {
+				System.out.println(visited.size() + "VISITED");
+				if (a.getX() == c.getX() && a.getY() == c.getY()) {
+					alreadyVisited = true;
 				}
 			}
-			for(Coord j : badAdjDirs){
-				adjDirs.remove(j);
+			
+			
+			if (alreadyVisited) {
+				System.out.println("FOUND");
+				System.out.println("FOUND");
+				System.out.println("FOUND");
+				System.out.println("FOUND");
+				System.out.println("FOUND");
+				System.out.println("FOUND");
+			} else {
+				visited.add(c);
+				adjDirs = boardData.getAdjacent(c.getX(), c.getY());
+				for(Coord k : adjDirs){
+					if((boardData.get(k) < 2 || boardData.get(k) == 4) && !dirs.contains(k)){
+						dirs.add(k);
+					} else {
+						badAdjDirs.add(k);
+					}
+				}
+				for(Coord j : badAdjDirs){
+					adjDirs.remove(j);
+				}
+			
+				addCheckDir(adjDirs, count);
+				for(Coord o : adjDirs){
+					dirs.add(o);
+				}
+				adjDirs.clear();
 			}
-			addCheckDir(adjDirs, count);
-			for(Coord o : adjDirs){
-				dirs.add(o);
-			}
-			//adjDirs.clear();
+			
 		}
 	}
 
