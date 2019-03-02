@@ -1,10 +1,23 @@
 public class Node {
 	protected Node up, down, left, right;
-	int type, x, y;
+	int type, x, y, distanceFromOrigin;
 	public Node(int x, int y, int type) {
 		this.type = type;
 		this.x = x;
 		this.y = y;
+		distanceFromOrigin = Integer.MAX_VALUE;
+	}
+	
+	public int getDistance() {
+		return distanceFromOrigin;
+	}
+	
+	public Node[] getNeighbors() {
+		return {up, down, left, right};
+	}
+	
+	public void setDistance(int d) {
+		distanceFromOrigin = d;
 	}
 	
 	public int getX() {

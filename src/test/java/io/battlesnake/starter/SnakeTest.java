@@ -46,14 +46,6 @@ public class SnakeTest {
 		Map<String, String> response = handler.move(moveRequest);
         assertEquals(response.get("desiredOutcome"), response.get("move"));
     }
-	
-	@Test
-    void linkedListGenerationTest() throws IOException {
-		CustomTestCases tester = new CustomTestCases();
-        JsonNode moveRequest = tester.test2DLinkedList();
-		Map<String, String> response = handler.move(moveRequest);
-        assertEquals(response.get("desiredOutcome"), response.get("move"));
-    }
 
     @Test
     void endTest() throws IOException {

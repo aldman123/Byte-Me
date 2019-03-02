@@ -6,12 +6,14 @@
  */
 
 public class BoardDataNodes {
-	final int left = 0;
-	final int right = 1;
-	final int up = 2;
-	final int down = 3;
-	Node ourSnake;
-	int[][] boardArray;
+	private final int left = 0;
+	private final int right = 1;
+	private final int up = 2;
+	private final int down = 3;
+	private int size = 0;
+	private Node ourSnake;
+	private int[][] boardArray;
+	
 	public BoardDataNode(BoardData data) {
 		boardArray = data.getBoard();
 		int[][] boardArrayClone = new int[boardArray.length][boardArray[0].length];
@@ -25,14 +27,19 @@ public class BoardDataNodes {
 		Coord origin = data.getSelf().getHead();
 		Node origin = new Node(origin.getX(), origin.getY(), 2); //Our head has value of 2
 		this.boardArray[origin.getX()][origin.getY()] == -1;
+		size++;
 		generateNode(origin, 0);
 		generateNode(origin, 1);
 		generateNode(origin, 2);
 		generateNode(origin, 3);
 	}
 	
-	public getOrigin() {
+	public Node getOrigin() {
 		return origin;
+	}
+	
+	public int getSize() {
+		return size;
 	}
 	
 	
@@ -67,7 +74,7 @@ public class BoardDataNodes {
 			return;
 		} else {
 			newNode = new Node(x, y, boardArray[x][y]);
-			
+			size++;
 			if (direction == left) {
 				origin.linkRight(newNode);
 			} else if (direction == right) {
