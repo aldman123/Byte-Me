@@ -14,34 +14,38 @@ public class MoveSelector {
 	private final String left = "left";
 	private final String right = "right";
 
-	private File file;
 	private BoardData boardData;
 	private int[][] board;
 	private SnakeData self;
+	int hungerThreshhold = 90;
 
 	private ArrayList<Coord> moveOptions, scratch, scratch2, foodCoords, adjDirs;
 	private String optimalPath = up;
 	private ArrayList<Coord> badAdjDirs = new ArrayList<>();
-	
+	private int boardWidth;
 	
 	public String selectMove(JsonNode moveRequest) {
 		String turn = moveRequest.get("turn").asText();
 		this.boardData = new BoardData(moveRequest);
 		board = boardData.getBoard();
 		self = boardData.getSelf();
-
 		return valueRanking();
 	}
 	
 	private String valueRanking() {
 		int x = self.getHead().getX();
 		int y = self.getHead().getY();
+		boardWidth = board.length;
 
 		System.out.println("Self: {" + x + ", " + y + "}");
 		moveOptions = boardData.getAdjacent(x, y);
 		System.out.println("L1: " + moveOptions.toString());
 		if (isThereOptimalPath(moveOptions)) {
 			return optimalPath;
+		}
+		
+		if(self.getSize() > boardWidth*2){
+			hungerThreshhold = 30;
 		}
 		
 		//L2	Don't go adjacent to wall or snake
@@ -85,7 +89,7 @@ public class MoveSelector {
 		//L3	Are we adjacent to any food?
 		//System.out.println("L3: " + moveOptions.toString());
 		//System.out.println("L3: " + moveOptions.toString());
-		/*for (Coord c : moveOptions) {
+		for (Coord c : moveOptions) {
 			if (boardData.get(c) == 1) {
 				scratch.add(c);
 			}
@@ -96,7 +100,7 @@ public class MoveSelector {
 		} else if (scratch.size() > 1) {
 			moveOptions = (ArrayList<Coord>) scratch.clone();
 		}
-		scratch.clear();*/
+		scratch.clear();
 		
 		//L4	Else pick a direction not adjacent to a wall
 		System.out.println("L4: " + moveOptions.toString());
@@ -125,16 +129,11 @@ public class MoveSelector {
 		
 	}
 	
-	public void saveToFile(String output, String fileName) {
-		String[] arr = {output};
-	}
-	
 	/*Returns a direction to move if there is more than one option*
 	  Returns String - up, down, left, or right*/
 	private String volumeFormula(){
 		
-		
-		if(self.getHealth() < 40){
+		if(self.getHealth() < hungerThreshhold){
 			return starvingDirection();
 		}
 		return findVolume();
@@ -194,7 +193,7 @@ public class MoveSelector {
 	private int valueOfDirection(Coord direction, int value){
 		
 		ArrayList<Coord> dirToCheck= boardData.getAdjacent(direction.getX(), direction.getY());
-		addCheckDir(dirToCheck, 4);
+		addCheckDir(dirToCheck, 4 );
 		
 		ArrayList<Coord> newList = new ArrayList<>();
 		newList.add(dirToCheck.get(0));
