@@ -1,3 +1,4 @@
+package io.battlesnake.starter;
 public class Node {
 	protected Node up, down, left, right;
 	int type, x, y, distanceFromOrigin;
@@ -13,7 +14,8 @@ public class Node {
 	}
 	
 	public Node[] getNeighbors() {
-		return {up, down, left, right};
+		Node[] output = {up, down, left, right};
+		return output;
 	}
 	
 	public void setDistance(int d) {

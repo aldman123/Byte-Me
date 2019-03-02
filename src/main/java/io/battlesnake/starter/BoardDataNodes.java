@@ -1,3 +1,4 @@
+package io.battlesnake.starter;
 /*
  * This class is used to convert a board array to a 2D linkedlist
  * of Nodes to be used in pathfinding algorithms.
@@ -14,28 +15,29 @@ public class BoardDataNodes {
 	private Node ourSnake;
 	private int[][] boardArray;
 	
-	public BoardDataNode(BoardData data) {
+	public BoardDataNodes(BoardData data) {
 		boardArray = data.getBoard();
 		int[][] boardArrayClone = new int[boardArray.length][boardArray[0].length];
-		for (int x = 0; i < boardArrayClone.length; x++) {
-			for (int y = 0; i < boardArrayClone[0].length; y++) {
+		for (int x = 0; x < boardArrayClone.length; x++) {
+			for (int y = 0; y < boardArrayClone[0].length; y++) {
 				boardArrayClone[x][y] = boardArray[x][y];
 			}
 		}
 		
 		this.boardArray = boardArrayClone;
 		Coord origin = data.getSelf().getHead();
-		Node origin = new Node(origin.getX(), origin.getY(), 2); //Our head has value of 2
-		this.boardArray[origin.getX()][origin.getY()] == -1;
+		Node ourSnake = new Node(origin.getX(), origin.getY(), 2); //Our head has value of 2
+		this.boardArray[origin.getX()][origin.getY()] = -1;
 		size++;
-		generateNode(origin, 0);
-		generateNode(origin, 1);
-		generateNode(origin, 2);
-		generateNode(origin, 3);
+		generateNode(ourSnake, 0);
+		generateNode(ourSnake, 1);
+		generateNode(ourSnake, 2);
+		generateNode(ourSnake, 3);
+		this.ourSnake = ourSnake;
 	}
 	
 	public Node getOrigin() {
-		return origin;
+		return ourSnake;
 	}
 	
 	public int getSize() {
