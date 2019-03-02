@@ -222,14 +222,8 @@ public class MoveSelector {
 	//finds the interger value of the volume in that direction
 	//reterns int, the higher the value the better
 	private int valueOfDirection(Coord direction, int value){
-		ArrayList<Coord> temp = new ArrayList<>();
 		ArrayList<Coord> dirToCheck= boardData.getAdjacent(direction.getX(), direction.getY());
-		for(Coord c : dirToCheck){
-			if((boardData.get(c) < 2 || boardData.get(c) == 4)){
-				temp.add(c);
-			}
-		}
-		dirToCheck = temp;
+		
 		visited = new LinkedList<Coord>();
 		addCheckDir(dirToCheck, 4);
 
@@ -252,7 +246,6 @@ public class MoveSelector {
 		dirToCheck.addAll(newList);
 
 		for(Coord c : dirToCheck){
-
 			value++;
 		}
 
@@ -292,7 +285,7 @@ public class MoveSelector {
 			for(Coord o : adjDirs){
 				dirs.add(o);
 			}
-			adjDirs.clear();
+			//adjDirs.clear();
 		}
 	}
 
