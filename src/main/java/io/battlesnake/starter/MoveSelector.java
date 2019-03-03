@@ -262,7 +262,7 @@ public class MoveSelector {
 	private LinkedList<Coord> visited;
 
 	private void addCheckDir(ArrayList<Coord> dirs, int count){
-		if (System.currentTimeMillis() - startTime > 400) {
+		if (System.currentTimeMillis() - startTime > 120) {
 			return;
 		}
 		count--;
