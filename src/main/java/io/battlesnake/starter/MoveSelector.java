@@ -25,8 +25,10 @@ public class MoveSelector {
 	private String optimalPath = up;
 	private ArrayList<Coord> badAdjDirs = new ArrayList<>();
 	private int boardWidth;
+	private int startTime;
 
 	public String selectMove(JsonNode moveRequest) {
+		startTime = moveRequest.get("startTime").asInt();
 		String turn = moveRequest.get("turn").asText();
 		this.boardData = new BoardData(moveRequest);
 		board = boardData.getBoard();
@@ -172,6 +174,8 @@ public class MoveSelector {
 	//finds the direction with the most open areas for movement
 	//returns String direction
 	private String findVolume() {
+
+
 		if (moveOptions.size() < 1) {
 			return left;
 		}
@@ -223,7 +227,7 @@ public class MoveSelector {
 	//reterns int, the higher the value the better
 	private int valueOfDirection(Coord direction, int value){
 		ArrayList<Coord> dirToCheck= boardData.getAdjacent(direction.getX(), direction.getY());
-		
+
 		visited = new LinkedList<Coord>();
 		addCheckDir(dirToCheck, 3);
 
@@ -258,6 +262,9 @@ public class MoveSelector {
 	private LinkedList<Coord> visited;
 
 	private void addCheckDir(ArrayList<Coord> dirs, int count){
+		if (System.currentTimeMillis() - startTime > 400) {
+			return;
+		}
 		count--;
 		if(count < 1){
 			return;
@@ -275,8 +282,8 @@ public class MoveSelector {
 					alreadyVisited = true;
 				}
 			}
-			
-			
+
+
 			if (alreadyVisited) {
 				System.out.println("FOUND");
 				System.out.println("FOUND");
@@ -297,14 +304,14 @@ public class MoveSelector {
 				for(Coord j : badAdjDirs){
 					adjDirs.remove(j);
 				}
-			
+
 				addCheckDir(adjDirs, count);
 				for(Coord o : adjDirs){
 					dirs.add(o);
 				}
 				adjDirs.clear();
 			}
-			
+
 		}
 	}
 
