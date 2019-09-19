@@ -3,10 +3,10 @@ Byte-Me -> A derivation of starter-snake-java
 
 [![Build Status](https://travis-ci.org/battlesnakeio/starter-snake-java.svg?branch=master)](https://travis-ci.org/battlesnakeio/starter-snake-java)
 
-A simple [Battlesnake AI](http://battlesnake.io) written in Java.
+A [Battlesnake AI](http://battlesnake.io) written in Java for the Victoria 2019 BattleSnake competition by Alexander Aldridge and Tia McDowell.
 
 Visit [https://docs.battlesnake.io](https://docs.battlesnake.io) 
-for API documentation and instructions for running your AI.
+for API documentation and instructions for running the snake.
 
 This snake is built using a lightweight http server Spark framework - [http://sparkjava.com/documentation](http://sparkjava.com/documentation)
 
